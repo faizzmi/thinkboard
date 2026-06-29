@@ -35,8 +35,8 @@ const HomePage = () => {
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/api/notes/");
-      setNotes(res.data);
+      const res = await api.get(`/api/notes/${id}`);
+      setNotes(Array.isArray(res.data) ? res.data : []);
       setIsRateLimited(false);
     } catch (error) {
       console.error("Error fetching notes", error);
