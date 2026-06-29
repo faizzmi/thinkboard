@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
 import { SaveIcon, ArrowLeftIcon, TypeIcon, AlignLeftIcon } from "lucide-react";
+import api from "../lib/axios";
 
 const CreatePage = () => {
   const [note, setNote] = useState({ title: "", content: "" });
@@ -21,7 +21,7 @@ const CreatePage = () => {
 
     setSaving(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/notes/`, {
+      await api.post("/api/notes/", {
         title: note.title.trim(),
         content: note.content.trim(),
       });

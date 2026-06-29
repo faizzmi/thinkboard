@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
 import { ArrowLeftIcon, PenSquareIcon, Trash2Icon, CalendarIcon, ClockIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
+import api from "../lib/axios";
 
 const NoteDetailPage = () => {
   const { id } = useParams();
@@ -15,9 +15,7 @@ const NoteDetailPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/notes/${id}`
-        );
+        const res = await api.get(`/api/notes/${id}`);
         setNote(res.data);
       } catch (error) {
         console.error("Error fetching note", error);
@@ -35,7 +33,7 @@ const NoteDetailPage = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/notes/${id}`);
+      await api.delete(`/api/notes/${id}`);
       toast.success("Note deleted");
       navigate("/");
     } catch (error) {

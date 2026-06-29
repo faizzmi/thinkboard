@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { PlusIcon, StickyNoteIcon, SearchIcon } from "lucide-react";
+import api from "../lib/axios";
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-24 px-4 animate-fade-in">
@@ -35,7 +35,7 @@ const HomePage = () => {
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/notes/`);
+      const res = await api.get("/api/notes/");
       setNotes(res.data);
       setIsRateLimited(false);
     } catch (error) {
@@ -59,7 +59,7 @@ const HomePage = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/notes/${id}`);
+      await api.delete(`/api/notes/${id}`);
       setNotes((prev) => prev.filter((n) => n._id !== id));
       toast.success("Note deleted");
     } catch (error) {

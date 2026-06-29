@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
 import { SaveIcon, ArrowLeftIcon, TypeIcon, AlignLeftIcon, CalendarIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
+import api from "../lib/axios";
 
 const EditNotePage = () => {
   const { id } = useParams();
@@ -24,9 +24,7 @@ const EditNotePage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/notes/${id}`
-        );
+        const res = await api.get("/api/notes/${id}");
         setNote(res.data);
         setOriginal(res.data);
       } catch (error) {
@@ -48,7 +46,7 @@ const EditNotePage = () => {
 
     setSaving(true);
     try {
-      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/notes/${id}`, {
+      await api.put(`/api/notes/${id}`, {
         title: note.title.trim(),
         content: note.content.trim(),
       });
