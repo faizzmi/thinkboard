@@ -13,7 +13,7 @@ const app = express();
 const __dirname = path.resolve()
 
 // middleware
-if (process.env.NODE_ENV !== "prodcution"){
+if (process.env.NODE_ENV !== "production"){
     app.use(cors({
         origin: "http://localhost:5173"
     })); // cors
