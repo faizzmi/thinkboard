@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
+import ConfirmModal from "../components/ConfirmModal";
 import { ArrowLeftIcon, PenSquareIcon, Trash2Icon, CalendarIcon, ClockIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
@@ -11,6 +12,7 @@ const NoteDetailPage = () => {
   const navigate = useNavigate();
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -28,10 +30,8 @@ const NoteDetailPage = () => {
     fetchNote();
   }, [id, navigate]);
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm("Delete this note? This cannot be undone.");
-    if (!confirmed) return;
-
+  const handleDeleteConfirm = async () => {
+    setShowConfirm(false);
     try {
       await api.delete(`/api/notes/${id}`);
       toast.success("Note deleted");
@@ -69,6 +69,16 @@ const NoteDetailPage = () => {
     <div className="min-h-screen">
       <NavBar />
 
+      <ConfirmModal
+        isOpen={showConfirm}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setShowConfirm(false)}
+        title="Delete this note?"
+        message="This will permanently remove the note. You can't undo this."
+        confirmLabel="Delete"
+        confirmVariant="error"
+      />
+
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         <Link
           to="/"
@@ -80,40 +90,33 @@ const NoteDetailPage = () => {
 
         <article className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 animate-slide-up overflow-hidden">
 
-          {/* Top accent bar */}
           <div className="h-1 w-full bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
 
           <div className="p-6 sm:p-8">
-            {/* Title */}
             <h1 className="text-2xl sm:text-3xl font-bold text-base-content leading-snug mb-3">
               {note.title}
             </h1>
 
-            {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 text-xs text-base-content/35 mb-6">
               <span className="flex items-center gap-1.5">
                 <CalendarIcon className="w-3.5 h-3.5" />
-                Created{" "}
-                {formatDate(new Date(note.createdAt))}
+                Created {formatDate(new Date(note.createdAt))}
               </span>
               {note.updatedAt && note.updatedAt !== note.createdAt && (
                 <span className="flex items-center gap-1.5">
                   <ClockIcon className="w-3.5 h-3.5" />
-                  Edited{" "}
-                  {formatDate(new Date(note.updatedAt))}
+                  Edited {formatDate(new Date(note.updatedAt))}
                 </span>
               )}
             </div>
 
             <div className="border-t border-base-content/6 mb-6" />
 
-            {/* Content - plain readable text, no inputs */}
             <p className="text-base-content/80 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
               {note.content}
             </p>
           </div>
 
-          {/* Footer */}
           <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
             <div className="border-t border-base-content/6 pt-5 flex items-center justify-between gap-3">
               <span className="text-xs text-base-content/25 font-mono">
@@ -121,7 +124,7 @@ const NoteDetailPage = () => {
               </span>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={handleDelete}
+                  onClick={() => setShowConfirm(true)}
                   className="btn btn-ghost btn-sm gap-2 text-base-content/40 hover:text-error hover:bg-error/10"
                 >
                   <Trash2Icon className="w-4 h-4" />

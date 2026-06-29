@@ -24,7 +24,7 @@ const EditNotePage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await api.get("/api/notes/${id}");
+        const res = await api.get(`/api/notes/${id}`);
         setNote(res.data);
         setOriginal(res.data);
       } catch (error) {

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
+import ConfirmModal from "../components/ConfirmModal";
 import toast from "react-hot-toast";
 import { PlusIcon, StickyNoteIcon, SearchIcon } from "lucide-react";
 import api from "../lib/axios";
@@ -31,11 +32,13 @@ const HomePage = () => {
   const [notes, setNotes] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(null); // holds note id
 
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/api/notes/${id}`);
+      const res = await api.get("/api/notes/");
+      console.log("response:", res.data);
       setNotes(Array.isArray(res.data) ? res.data : []);
       setIsRateLimited(false);
     } catch (error) {
@@ -54,10 +57,13 @@ const HomePage = () => {
     fetchNotes();
   }, []);
 
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm("Delete this note? This cannot be undone.");
-    if (!confirmed) return;
+  const handleDeleteRequest = (id) => {
+    setConfirmDelete(id);
+  };
 
+  const handleDeleteConfirm = async () => {
+    const id = confirmDelete;
+    setConfirmDelete(null);
     try {
       await api.delete(`/api/notes/${id}`);
       setNotes((prev) => prev.filter((n) => n._id !== id));
@@ -78,8 +84,17 @@ const HomePage = () => {
     <div className="min-h-screen">
       <NavBar />
 
+      <ConfirmModal
+        isOpen={!!confirmDelete}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setConfirmDelete(null)}
+        title="Delete this note?"
+        message="This will permanently remove the note. You can't undo this."
+        confirmLabel="Delete"
+        confirmVariant="error"
+      />
+
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {/* Page header */}
         {!isRateLimited && !isLoading && notes.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 animate-slide-up">
             <div className="flex-1">
@@ -94,7 +109,6 @@ const HomePage = () => {
               </p>
             </div>
 
-            {/* Search */}
             <div className="relative w-full sm:w-64">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
               <input
@@ -108,10 +122,8 @@ const HomePage = () => {
           </div>
         )}
 
-        {/* Rate limited */}
         {isRateLimited && <RateLimitedUI onRetry={fetchNotes} />}
 
-        {/* Loading skeleton */}
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
@@ -131,10 +143,8 @@ const HomePage = () => {
           </div>
         )}
 
-        {/* Empty state */}
         {!isLoading && !isRateLimited && notes.length === 0 && <EmptyState />}
 
-        {/* Search empty */}
         {!isLoading && !isRateLimited && notes.length > 0 && filtered.length === 0 && (
           <div className="text-center py-16 animate-fade-in">
             <p className="text-base-content/40 text-sm">
@@ -149,11 +159,10 @@ const HomePage = () => {
           </div>
         )}
 
-        {/* Notes grid */}
         {!isLoading && !isRateLimited && filtered.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((note) => (
-              <NoteCard key={note._id} note={note} onDelete={handleDelete} />
+              <NoteCard key={note._id} note={note} onDelete={handleDeleteRequest} />
             ))}
           </div>
         )}
