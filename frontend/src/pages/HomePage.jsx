@@ -38,7 +38,7 @@ const HomePage = () => {
     setLoading(true);
     try {
       const res = await api.get("/api/notes/");
-      console.log("response:", res.data);
+      // console.log("response:", res.data);
       setNotes(Array.isArray(res.data) ? res.data : []);
       setIsRateLimited(false);
     } catch (error) {
