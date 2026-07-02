@@ -4,7 +4,8 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "mocha"
   },
   "type": "module",
   "author": "Faiz",
@@ -17,9 +18,16 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "mongoose": "^9.7.2",
-    "thinkboard": "file:.."
+    "morgan": "^1.11.0",
+    "thinkboard": "file:..",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "chai": "^6.2.2",
+    "mocha": "^11.7.6",
+    "mongodb-memory-server": "^11.2.0",
+    "nodemon": "^3.1.14",
+    "sinon": "^22.0.0",
+    "supertest": "^7.2.2"
   }
 }

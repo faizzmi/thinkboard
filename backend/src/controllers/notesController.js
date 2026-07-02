@@ -1,11 +1,12 @@
 import Note from "../models/Note.js";
+import logger from "../config/logger.js";
 
 export async function getAllNotes(_, res) {
     try {
         const notes = await Note.find().sort({ createdAt: -1 })
         res.status(200).json(notes)
     } catch (error) {
-        console.error("Error in getAllNotes", error)
+        logger.error("Error in getAllNotes", error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -16,7 +17,7 @@ export async function getNotebyId(req, res) {
         if (!note) return res.status(404).json({ message: "Note not found" })
         res.status(200).json(note)
     } catch (error) {
-        console.error("Error in getNotebyId", error)
+        logger.error("Error in getNotebyId", error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -28,7 +29,7 @@ export async function createNote(req, res) {
         await newNote.save()
         res.status(201).json({ message: "Note created successfully!" })
     } catch (error) {
-        console.error("Error in createNote", error)
+        logger.error("Error in createNote", error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -44,7 +45,7 @@ export async function updateNotes(req, res) {
         if (!updatedNote) return res.status(404).json({ message: "Note not found" })
         res.status(200).json({ message: "Note updated successfully!" })
     } catch (error) {
-        console.error("Error in updateNotes", error)
+        logger.error("Error in updateNotes", error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -55,7 +56,7 @@ export async function deleteNotes(req, res) {
         if (!deletedNote) return res.status(404).json({ message: "Note not found" })
         res.status(200).json({ message: "Note deleted successfully!" })
     } catch (error) {
-        console.error("Error in deleteNotes", error)
+        logger.error("Error in deleteNotes", error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
