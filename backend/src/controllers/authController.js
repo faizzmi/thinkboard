@@ -28,6 +28,7 @@ export async function signup(req, res) {
             _id: user._id,
             name: user.name,
             email: user.email,
+            theme: user.theme,
             token: generateToken(user._id),
         });
     } catch (error) {
@@ -58,6 +59,7 @@ export async function login(req, res) {
             _id: user._id,
             name: user.name,
             email: user.email,
+            theme: user.theme,
             token: generateToken(user._id),
         });
     } catch (error) {
@@ -68,4 +70,16 @@ export async function login(req, res) {
 
 export async function getMe(req, res) {
     res.status(200).json(req.user);
+}
+
+export async function updateTheme(req, res) {
+    try {
+        const { theme } = req.body;
+        req.user.theme = theme;
+        await req.user.save();
+        res.status(200).json({ theme: req.user.theme });
+    } catch (error) {
+        logger.error("Error in updateTheme", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 }

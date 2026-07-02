@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { UserPlusIcon, UserIcon, MailIcon, LockIcon } from "lucide-react";
 import api from "../lib/axios";
 import { useAuth } from "../context/AuthContext";
+import CryptoJS from "crypto-js";
 
 const SignupPage = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -26,6 +27,7 @@ const SignupPage = () => {
     try {
       const hashedPassword = CryptoJS.SHA256(form.password).toString();
       const res = await api.post("/api/auth/signup", {
+        name: form.name,
         email: form.email,
         password: hashedPassword,
       });
@@ -33,6 +35,7 @@ const SignupPage = () => {
       toast.success("Account created!");
       navigate("/");
     } catch (error) {
+      console.error("Signup error full:", error);
       const msg = error.response?.data?.message || "Signup failed";
       toast.error(msg);
     } finally {

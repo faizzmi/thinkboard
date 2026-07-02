@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema(
             required: true,
             minlength: 6,
         },
+        theme: {
+            type: String,
+            default: "light",
+        }
     },
     { timestamps: true }
 );

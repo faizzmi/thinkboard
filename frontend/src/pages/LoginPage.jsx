@@ -25,6 +25,7 @@ const LoginPage = () => {
       const res = await api.post("/api/auth/login", {
         email: form.email,
         password: hashedPassword,
+        theme: "light",
       });
       login(res.data);
       toast.success("Welcome back!");
