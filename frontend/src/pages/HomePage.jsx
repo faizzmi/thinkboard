@@ -7,6 +7,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import toast from "react-hot-toast";
 import { PlusIcon, StickyNoteIcon, SearchIcon } from "lucide-react";
 import api from "../lib/axios";
+import { useAuth } from "../context/AuthContext";
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-24 px-4 animate-fade-in">
@@ -33,12 +34,12 @@ const HomePage = () => {
   const [isLoading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null); // holds note id
+  const { user } = useAuth();
 
   const fetchNotes = async () => {
     setLoading(true);
     try {
       const res = await api.get("/api/notes/");
-      // console.log("response:", res.data);
       setNotes(Array.isArray(res.data) ? res.data : []);
       setIsRateLimited(false);
     } catch (error) {
@@ -95,11 +96,14 @@ const HomePage = () => {
       />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {!isRateLimited && !isLoading && notes.length > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 animate-slide-up">
+        
+      {!isRateLimited && !isLoading && notes.length > 0 && (
+        <div className="mb-8 animate-slide-up">
+          {user && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-base-content">
-                Your notes
+                {user.name}'s Notes
                 <span className="ml-2 text-sm font-normal text-base-content/40 font-mono">
                   ({notes.length})
                 </span>
@@ -119,8 +123,18 @@ const HomePage = () => {
                 className="input input-bordered input-sm w-full pl-9 bg-base-100/60 backdrop-blur-sm focus:border-primary/50 focus:outline-none"
               />
             </div>
+
+            <Link
+              to="/create"
+              className="btn btn-primary btn-sm gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 w-full sm:w-auto"
+            >
+              <PlusIcon className="w-4 h-4" />
+              New Note
+            </Link>
           </div>
-        )}
+          )}
+        </div>
+      )}
 
         {isRateLimited && <RateLimitedUI onRetry={fetchNotes} />}
 

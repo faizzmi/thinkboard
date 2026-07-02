@@ -12,6 +12,8 @@ import logger from "./config/logger.js";
 import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
 import logsRoutes from "./routes/logsRoutes.js"
 
+import authRoutes from "./routes/authRoutes.js";
+
 dotenv.config()
 
 const PORT = process.env.PORT || 5001;
@@ -40,6 +42,7 @@ app.use(morgan(
 //     next();
 // })
 
+app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/logs", logsRoutes);
 
