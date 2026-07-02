@@ -35,19 +35,9 @@ app.use(morgan(
     },
 }));
 
-// simple applications
-// other application auth check ans rate limiting (req)
-// app.use((req, res, next) => {
-//     console.log(`req method is ${req.method} & Req URL is ${req.url}`);
-//     next();
-// })
-
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/logs", logsRoutes);
-
-app.use(notFoundHandler);
-app.use(errorHandler);
 
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception", { message: err.message, stack: err.stack });
@@ -66,6 +56,9 @@ if (process.env.NODE_ENV ==="production"){
         res.sendFile(path.join(__dirname, "../frontend/dist","index.html"))
     })
 };
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 connectDB().then(() => {
     app.listen(PORT, () => {
