@@ -27,6 +27,9 @@ jobs:
         working-directory: backend
         env:
           MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org
+      - name: Test with coverage  
+        run: npm run test:coverage
+        working-directory: backend
 
   frontend:
     runs-on: ubuntu-latest

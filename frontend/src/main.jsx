@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 import { logClientError } from './lib/logger.js'
+import * as Sentry from "@sentry/react";
 
 window.addEventListener("error", (e) => {
   logClientError({ message: e.message, stack: e.error?.stack });
@@ -14,6 +15,11 @@ window.addEventListener("error", (e) => {
 
 window.addEventListener("unhandledrejection", (e) => {
   logClientError({ message: "Unhandled promise rejection", stack: String(e.reason) });
+});
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  environment: import.meta.env.NODE_ENV,
 });
 
 createRoot(document.getElementById('root')).render(

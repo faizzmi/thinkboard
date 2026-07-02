@@ -31,6 +31,7 @@ const LoginPage = () => {
       toast.success("Welcome back!");
       navigate("/");
     } catch (error) {
+      console.error("Login error full:", error);
       const msg = error.response?.data?.message || "Login failed";
       toast.error(msg);
     } finally {

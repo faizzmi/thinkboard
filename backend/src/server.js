@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import rateLimiter from "./middleware/rateLimiter.js";
 import cors from "cors"
 import path from "path"
+import * as Sentry from "@sentry/node";
 
 // logger and error handler
 import morgan from "morgan";
@@ -13,6 +14,7 @@ import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
 import logsRoutes from "./routes/logsRoutes.js"
 
 import authRoutes from "./routes/authRoutes.js";
+import { env } from "process";
 
 dotenv.config()
 
@@ -21,6 +23,12 @@ const app = express();
 const __dirname = path.resolve()
 
 // middleware
+Sentry.init({
+    dsn: process.env.SENTRY_DSN_BACKEND,
+    environment: process.env.NODE_ENV,
+    tracesSampling: 1.0,
+});
+
 if (process.env.NODE_ENV !== "production"){
     app.use(cors({
         origin: "http://localhost:5173"

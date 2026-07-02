@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.NODE_ENV === "development" 
-  ? "http://localhost:5001" 
-  : "";
+const BASE_URL = import.meta.env.DEV ? "http://localhost:5001" : "";
 
 const api = axios.create({
     baseURL: BASE_URL,
