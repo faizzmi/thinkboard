@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
 import ConfirmModal from "../components/ConfirmModal";
 import toast from "react-hot-toast";
-import { PlusIcon, StickyNoteIcon, SearchIcon } from "lucide-react";
+import { PlusIcon, StickyNoteIcon, SearchIcon, Loader2Icon } from "lucide-react";
 import api from "../lib/axios";
 import { useAuth } from "../context/AuthContext";
+
+const PAGE_SIZE = 9;
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-24 px-4 animate-fade-in">
@@ -31,16 +33,26 @@ const EmptyState = () => (
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [totalNotes, setTotalNotes] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [search, setSearch] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null); // holds note id
   const { user } = useAuth();
 
-  const fetchNotes = async () => {
-    setLoading(true);
+  const fetchNotes = useCallback(async (pageToFetch, { append = false } = {}) => {
+    append ? setIsLoadingMore(true) : setLoading(true);
     try {
-      const res = await api.get("/api/notes/");
-      setNotes(Array.isArray(res.data) ? res.data : []);
+      const res = await api.get("/api/notes/", {
+        params: { page: pageToFetch, limit: PAGE_SIZE },
+      });
+      const { notes: fetched, hasMore: more, totalNotes: total } = res.data;
+      setNotes((prev) => (append ? [...prev, ...fetched] : fetched));
+      setHasMore(more);
+      setTotalNotes(total);
+      setPage(pageToFetch);
       setIsRateLimited(false);
     } catch (error) {
       console.error("Error fetching notes", error);
@@ -51,28 +63,66 @@ const HomePage = () => {
       }
     } finally {
       setLoading(false);
+      setIsLoadingMore(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    fetchNotes(1);
+  }, [fetchNotes]);
+
+  const handleLoadMore = () => {
+    if (isLoadingMore || !hasMore) return;
+    fetchNotes(page + 1, { append: true });
+  };
 
   const handleDeleteRequest = (id) => {
     setConfirmDelete(id);
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = () => {
     const id = confirmDelete;
     setConfirmDelete(null);
-    try {
-      await api.delete(`/api/notes/${id}`);
-      setNotes((prev) => prev.filter((n) => n._id !== id));
-      toast.success("Note deleted");
-    } catch (error) {
-      console.error("Error deleting note", error);
-      toast.error("Failed to delete note");
-    }
+  
+    const deletedNote = notes.find((n) => n._id === id);
+    if (!deletedNote) return;
+  
+    // Optimistic: remove from the list immediately, don't wait on the network
+    setNotes((prev) => prev.filter((n) => n._id !== id));
+    setTotalNotes((prev) => Math.max(prev - 1, 0));
+  
+    let undone = false;
+    const undo = () => {
+      undone = true;
+      setNotes((prev) => [deletedNote, ...prev]);
+      setTotalNotes((prev) => prev + 1);
+    };
+  
+    toast((t) => (
+      <span className="flex items-center gap-3">
+        Note deleted
+        <button
+          className="btn btn-ghost btn-xs text-primary"
+          onClick={() => {
+            undo();
+            toast.dismiss(t.id);
+          }}
+        >
+          Undo
+        </button>
+      </span>
+    ), { duration: 4000 });
+  
+    setTimeout(async () => {
+      if (undone) return;
+      try {
+        await api.delete(`/api/notes/${id}`);
+      } catch (error) {
+        console.error("Error deleting note", error);
+        undo();
+        toast.error("Failed to delete note");
+      }
+    }, 4000);
   };
 
   const filtered = notes.filter(
@@ -97,7 +147,7 @@ const HomePage = () => {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         
-      {!isRateLimited && !isLoading && notes.length > 0 && (
+      {!isRateLimited && !isLoading && totalNotes > 0 && (
         <div className="mb-8 animate-slide-up">
           {user && (
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -105,11 +155,11 @@ const HomePage = () => {
               <h2 className="text-2xl font-bold text-base-content">
                 {user.name}'s Notes
                 <span className="ml-2 text-sm font-normal text-base-content/40 font-mono">
-                  ({notes.length})
+                  ({totalNotes})
                 </span>
               </h2>
               <p className="text-sm text-base-content/45 mt-0.5">
-                {notes.length === 1 ? "1 note saved" : `${notes.length} notes saved`}
+                {totalNotes === 1 ? "1 note saved" : `${totalNotes} notes saved`}
               </p>
             </div>
 
@@ -136,7 +186,7 @@ const HomePage = () => {
         </div>
       )}
 
-        {isRateLimited && <RateLimitedUI onRetry={fetchNotes} />}
+        {isRateLimited && <RateLimitedUI onRetry={() => fetchNotes(1)} />}
 
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -157,9 +207,9 @@ const HomePage = () => {
           </div>
         )}
 
-        {!isLoading && !isRateLimited && notes.length === 0 && <EmptyState />}
+        {!isLoading && !isRateLimited && totalNotes === 0 && <EmptyState />}
 
-        {!isLoading && !isRateLimited && notes.length > 0 && filtered.length === 0 && (
+        {!isLoading && !isRateLimited && totalNotes > 0 && filtered.length === 0 && (
           <div className="text-center py-16 animate-fade-in">
             <p className="text-base-content/40 text-sm">
               No notes match <span className="text-primary">"{search}"</span>
@@ -174,11 +224,38 @@ const HomePage = () => {
         )}
 
         {!isLoading && !isRateLimited && filtered.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((note) => (
-              <NoteCard key={note._id} note={note} onDelete={handleDeleteRequest} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filtered.map((note) => (
+                <NoteCard key={note._id} note={note} onDelete={handleDeleteRequest} />
+              ))}
+            </div>
+
+            {!search && hasMore && (
+              <div className="flex justify-center pt-6">
+                <button
+                  onClick={handleLoadMore}
+                  className="btn btn-outline btn-sm gap-2 min-w-40"
+                  disabled={isLoadingMore}
+                >
+                  {isLoadingMore ? (
+                    <>
+                      <Loader2Icon className="w-4 h-4 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    `Load ${Math.min(PAGE_SIZE, totalNotes - notes.length)} more`
+                  )}
+                </button>
+              </div>
+            )}
+
+            {!search && !hasMore && notes.length > PAGE_SIZE && (
+              <p className="text-center text-xs text-base-content/30 pt-4">
+                You've reached the end — {totalNotes} notes total
+              </p>
+            )}
+          </>
         )}
       </main>
     </div>

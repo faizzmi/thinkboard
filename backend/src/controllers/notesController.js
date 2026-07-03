@@ -3,10 +3,34 @@ import logger from "../config/logger.js";
 import { generateRawToken } from "../utils/tokens.js";
 import PDFDocument from "pdfkit";
 
+const DEFAULT_PAGE_SIZE = 9;
+const MAX_PAGE_SIZE = 50;
+
 export async function getAllNotes(req, res) {
     try {
-        const notes = await Note.find({ user: req.user._id }).sort({ createdAt: -1 })
-        res.status(200).json(notes)
+        const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+        const limit = Math.min(
+            Math.max(parseInt(req.query.limit, 10) || DEFAULT_PAGE_SIZE, 1),
+            MAX_PAGE_SIZE
+        );
+        const skip = (page - 1) * limit;
+
+        const [notes, totalNotes] = await Promise.all([
+            Note.find({ user: req.user._id })
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            Note.countDocuments({ user: req.user._id }),
+        ]);
+
+        res.status(200).json({
+            notes,
+            page,
+            limit,
+            totalNotes,
+            totalPages: Math.max(Math.ceil(totalNotes / limit), 1),
+            hasMore: skip + notes.length < totalNotes,
+        });
     } catch (error) {
         logger.error("Error in getAllNotes", { error: error.message, stack: error.stack })
         res.status(500).json({ message: "Internal Server Error" })

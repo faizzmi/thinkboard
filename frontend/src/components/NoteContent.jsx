@@ -10,7 +10,7 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
       <div className="h-1 w-full bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
 
       <div className={compact ? "p-5" : "p-6 sm:p-8"}>
-        <h1 className={`font-bold text-base-content leading-snug mb-3 ${compact ? "text-xl" : "text-2xl sm:text-3xl"}`}>
+        <h1 className={`font-bold text-base-content leading-snug mb-3 tracking-tight ${compact ? "text-lg" : "text-page-title"}`}>
           {note.title}
         </h1>
 

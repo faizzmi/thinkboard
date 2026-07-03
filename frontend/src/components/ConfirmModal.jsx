@@ -65,6 +65,7 @@ const ConfirmModal = ({
             <button
               onClick={onCancel}
               className="btn btn-ghost btn-sm"
+              autoFocus
             >
               Cancel
             </button>

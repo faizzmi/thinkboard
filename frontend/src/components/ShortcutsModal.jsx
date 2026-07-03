@@ -46,7 +46,7 @@ const ShortcutsModal = ({ isOpen, onClose }) => {
                             Keyboard shortcuts
                         </h2>
                     </div>
-                    <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle">
+                    <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle" aria-label="Close">
                         <XIcon className="w-4 h-4" />
                     </button>
                 </div>

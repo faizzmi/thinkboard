@@ -8,6 +8,12 @@ export default {
         mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
         sans: ["'Inter'", "ui-sans-serif", "system-ui"],
       },
+      fontSize: {
+        'page-title': ['1.75rem', { lineHeight: '2.1rem', fontWeight: '700', letterSpacing: '-0.02em' }],
+        'section-title': ['1.125rem', { lineHeight: '1.5rem', fontWeight: '600' }],
+        'body-sm': ['0.875rem', { lineHeight: '1.35rem' }],
+        'caption': ['0.75rem', { lineHeight: '1rem' }],
+      },
       borderRadius: {
         glass: "1.25rem",
       },

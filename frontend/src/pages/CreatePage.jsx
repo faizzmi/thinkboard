@@ -39,7 +39,7 @@ const CreatePage = () => {
           .map(({ text, done }) => ({ text: text.trim(), done })),
       });
       toast.success("Note created!");
-      navigate("/");
+      navigate("/notes");
     } catch (error) {
       console.error("Error creating note", error);
       if (error.response?.status === 429) {
@@ -62,7 +62,7 @@ const CreatePage = () => {
     <div className="min-h-screen">
       <NavBar />
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
         <Link
           to="/notes"
           className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"
@@ -127,7 +127,7 @@ const CreatePage = () => {
                 <kbd className="kbd kbd-xs">Enter</kbd> to save
               </p>
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <Link to="/" className="btn btn-ghost btn-sm flex-1 sm:flex-none">
+                <Link to="/notes" className="btn btn-ghost btn-sm flex-1 sm:flex-none">
                   Cancel
                 </Link>
                 <button

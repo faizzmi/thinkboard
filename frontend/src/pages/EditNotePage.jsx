@@ -51,7 +51,7 @@ const EditNotePage = () => {
       } catch (error) {
         console.error("Error fetching note", error);
         toast.error("Failed to load note");
-        navigate("/");
+        navigate("/notes");
       } finally {
         setLoading(false);
       }
@@ -95,7 +95,7 @@ const EditNotePage = () => {
     return (
       <div className="min-h-screen">
         <NavBar />
-        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
           <div className="h-5 w-32 bg-base-content/10 rounded mb-6 animate-pulse" />
           <div className="glass-panel p-6 sm:p-8 animate-pulse space-y-5">
             <div className="h-6 w-1/3 bg-base-content/10 rounded" />
@@ -111,7 +111,7 @@ const EditNotePage = () => {
     <div className="min-h-screen">
       <NavBar />
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
         <Link
           to={`/note/${id}`}
           className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"

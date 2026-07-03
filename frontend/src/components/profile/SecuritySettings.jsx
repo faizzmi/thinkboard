@@ -44,7 +44,7 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div>
         <h2 className="text-lg font-semibold text-base-content mb-1">Security</h2>
         <p className="text-sm text-base-content/50">Change your password</p>

@@ -48,18 +48,18 @@ const DashboardPage = () => {
     <div className="min-h-screen">
       <NavBar />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8 space-y-6">
         <div className="flex items-center gap-2.5">
           <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/15 ring-1 ring-primary/20">
             <LayoutDashboardIcon className="w-4 h-4 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold text-base-content">Dashboard</h1>
+          <h1 className="text-page-title text-base-content">Dashboard</h1>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="glass-panel p-5">
             <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Total notes</p>
-            <p className="text-2xl font-bold text-base-content">{data.totalNotes}</p>
+            <p className="text-page-title text-base-content">{data.totalNotes}</p>
           </div>
           <div className="glass-panel p-5">
             <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Overdue</p>

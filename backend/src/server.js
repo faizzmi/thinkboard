@@ -2,7 +2,7 @@ import express from "express";
 import notesRoutes from "./routes/notesRoutes.js"
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv"
-import rateLimiter from "./middleware/rateLimiter.js";
+import ipRateLimiter from "./middleware/ipRateLimiter.js";
 import cors from "cors"
 import path from "path"
 import * as Sentry from "@sentry/node";
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV !== "production"){
     })); // cors
 }
 app.use(express.json()); // will parse json body
-app.use(rateLimiter); // rate limiter
+app.use(ipRateLimiter); // rate limiter
 app.use(morgan(
 "combined", {
     stream: {

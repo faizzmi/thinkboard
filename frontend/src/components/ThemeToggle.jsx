@@ -23,6 +23,9 @@ const ThemeToggle = () => {
                 onClick={() => setOpen(!open)}
                 className="btn btn-ghost btn-sm btn-circle"
                 title="Change theme"
+                aria-label="Change theme"
+                aria-haspopup="true"
+                aria-expanded={open}
             >
                 <PaletteIcon className="w-4 h-4" />
             </button>

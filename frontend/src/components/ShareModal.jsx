@@ -63,7 +63,9 @@ const ShareModal = ({ isOpen, onClose, note, onShareChange }) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-base-content/70">Read-only link</span>
+            <span className="text-sm text-base-content/70">
+              {note.shareEnabled ? "Sharing is on" : "Enable read-only link"}
+            </span>
             <input
               type="checkbox"
               className="toggle toggle-primary toggle-sm"
@@ -79,8 +81,8 @@ const ShareModal = ({ isOpen, onClose, note, onShareChange }) => {
                 <LinkIcon className="w-3.5 h-3.5 text-base-content/40 shrink-0" />
                 <span className="truncate text-xs text-base-content/60">{shareUrl}</span>
               </div>
-              <button onClick={handleCopy} className="btn btn-ghost btn-sm btn-circle" title="Copy link">
-                <CopyIcon className="w-4 h-4" />
+              <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle" aria-label="Close">
+                <XIcon className="w-4 h-4" />
               </button>
             </div>
           )}

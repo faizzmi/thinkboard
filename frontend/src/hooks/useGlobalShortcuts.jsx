@@ -29,6 +29,13 @@ export function useGlobalShortcuts({ onOpenPalette, onOpenShortcutsRef }) {
 
       if (isTyping) return;
 
+      // Shift+N -> new note
+      if (e.shiftKey && !modPressed && e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        navigate("/create");
+        return;
+      }
+
       // Shift+/ (i.e. "?") -> shortcuts reference
       if (e.shiftKey && e.key === "?") {
         e.preventDefault();

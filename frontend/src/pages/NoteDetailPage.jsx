@@ -24,7 +24,7 @@ const NoteDetailPage = () => {
       } catch (error) {
         console.error("Error fetching note", error);
         toast.error("Failed to load note");
-        navigate("/");
+        navigate("/notes");
       } finally {
         setLoading(false);
       }
@@ -37,7 +37,7 @@ const NoteDetailPage = () => {
     try {
       await api.delete(`/api/notes/${id}`);
       toast.success("Note deleted");
-      navigate("/");
+      navigate("/notes");
     } catch (error) {
       console.error("Error deleting note", error);
       toast.error("Failed to delete note");
@@ -48,7 +48,7 @@ const NoteDetailPage = () => {
     return (
       <div className="min-h-screen">
         <NavBar />
-        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
           <div className="h-5 w-32 bg-base-content/10 rounded mb-6 animate-pulse" />
           <div className="glass-panel p-6 sm:p-8 animate-pulse space-y-4">
             <div className="h-7 w-2/3 bg-base-content/10 rounded" />
@@ -82,7 +82,7 @@ const NoteDetailPage = () => {
         onShareChange={(data) => setNote({ ...note, ...data })}
       />
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
         <div className="flex items-center justify-between mb-6">
           <Link
             to="/notes"

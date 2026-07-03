@@ -16,7 +16,11 @@ const NoteColumn = ({ slot, noteId, onPick }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("/api/notes/").then((res) => setNotes(res.data)).catch(() => {});
+    // Split view's picker wants a wider list than the 9-per-page default
+    api
+      .get("/api/notes/", { params: { limit: 50 } })
+      .then((res) => setNotes(res.data.notes))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -146,7 +150,7 @@ const SplitViewPage = () => {
           <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/15 ring-1 ring-primary/20">
             <Columns2Icon className="w-4 h-4 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold text-base-content">Split view</h1>
+          <h1 className="text-page-title text-base-content">Split view</h1>
         </div>
 
         {/* below lg, split view doesn't make sense - point back to single view */}

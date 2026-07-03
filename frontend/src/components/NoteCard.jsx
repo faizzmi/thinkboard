@@ -43,7 +43,7 @@ const NoteCard = ({ note, onDelete }) => {
           <button
             onClick={handleSplitView}
             className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-primary hover:bg-primary/10 hidden lg:inline-flex"
-            title="Open in split view"
+            aria-title="Open in split view"
           >
             <Columns2Icon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Split</span>
@@ -52,7 +52,7 @@ const NoteCard = ({ note, onDelete }) => {
             to={`/note/edit/${note._id}`}
             onClick={(e) => e.stopPropagation()}
             className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-info hover:bg-info/10"
-            title="Edit note"
+            aria-title="Edit note"
           >
             <PenSquareIcon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Edit</span>
@@ -60,7 +60,7 @@ const NoteCard = ({ note, onDelete }) => {
           <button
             onClick={handleDelete}
             className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-error hover:bg-error/10"
-            title="Delete note"
+            aria-title="Delete note"
           >
             <Trash2Icon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Delete</span>

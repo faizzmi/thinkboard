@@ -24,9 +24,9 @@ const ProfilePage = () => {
     <div className="min-h-screen">
       <NavBar />
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
 
-        <h1 className="text-2xl font-bold text-base-content mb-6">Settings</h1>
+        <h1 className="text-page-title text-base-content mb-6">Settings</h1>
 
         <div className="space-y-6">
           <section className="glass-panel glass-highlight">

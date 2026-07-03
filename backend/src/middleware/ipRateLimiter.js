@@ -1,20 +1,21 @@
 import ratelimit from "../config/upstash.js";
+import logger from "../config/logger.js";
 
-const userRateLimiter = async (req, res, next) => {
+const ipRateLimiter = async (req, res, next) => {
     try {
         const { success } = await ratelimit.limit(req.ip);
 
         if (!success) {
             return res.status(429).json({
-                message: "Too many requests, please try again later",
+                message: "Too many requests. Please try again in a moment.",
             });
         }
 
         next();
     } catch (error) {
-        console.log(`User rate limit error, ${error}`);
+        logger.error("Rate limiter error", { error: error.message });
         next(error);
     }
 };
 
-export default userRateLimiter;
+export default ipRateLimiter;

@@ -32,3 +32,9 @@ export function getDaysUntil(date) {
     if (days < 0) return `${Math.abs(days)}d overdue`;
     return `In ${days}d`;
 }
+
+export function getInitials(name) {
+    if (!name) return "?";
+    const parts = name.trim().split(/\s+/);
+    return parts.slice(0, 2).map((p) => p[0]?.toUpperCase() ?? "").join("") || "?";
+}
