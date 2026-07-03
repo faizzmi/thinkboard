@@ -24,8 +24,17 @@ export async function getNotebyId(req, res) {
 
 export async function createNote(req, res) {
     try {
-        const { title, content } = req.body
-        const newNote = new Note({ title, content, user: req.user._id })
+        const { title, content, type, priority, deadline, location, checklist } = req.body
+        const newNote = new Note({
+            title,
+            content,
+            type,
+            priority,
+            deadline: deadline || null,
+            location,
+            checklist,
+            user: req.user._id,
+        })
         await newNote.save()
         res.status(201).json({ message: "Note created successfully!" })
     } catch (error) {
@@ -36,10 +45,10 @@ export async function createNote(req, res) {
 
 export async function updateNotes(req, res) {
     try {
-        const { title, content } = req.body
+        const { title, content, type, priority, deadline, location, checklist } = req.body
         const updatedNote = await Note.findOneAndUpdate(
             { _id: req.params.id, user: req.user._id },
-            { title, content },
+            { title, content, type, priority, deadline: deadline || null, location, checklist },
             { new: true }
         )
         if (!updatedNote) return res.status(404).json({ message: "Note not found" })

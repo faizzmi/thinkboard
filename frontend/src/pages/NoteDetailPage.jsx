@@ -3,8 +3,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
 import ConfirmModal from "../components/ConfirmModal";
-import { ArrowLeftIcon, PenSquareIcon, Trash2Icon, CalendarIcon, ClockIcon } from "lucide-react";
-import { formatDate } from "../lib/utils";
+import { ArrowLeftIcon, PenSquareIcon, Trash2Icon, CalendarIcon, ClockIcon, CalendarClockIcon, MapPinIcon } from "lucide-react";
+import { formatDate, isOverdue } from "../lib/utils";
 import api from "../lib/axios";
 
 const NoteDetailPage = () => {
@@ -116,6 +116,36 @@ const NoteDetailPage = () => {
               {note.content}
             </p>
           </div>
+
+          {(note.deadline || note.location || note.checklist?.length > 0) && (
+            <div className="border-t border-base-content/6 pt-5 mt-6 space-y-4">
+              {note.deadline && (
+                <div className={`flex items-center gap-2 text-sm ${isOverdue(note.deadline) ? "text-error" : "text-base-content/60"}`}>
+                  <CalendarClockIcon className="w-4 h-4" />
+                  {isOverdue(note.deadline) ? "Overdue: " : "Due "}
+                  {new Date(note.deadline).toLocaleString()}
+                </div>
+              )}
+              {note.location && (
+                <div className="flex items-center gap-2 text-sm text-base-content/60">
+                  <MapPinIcon className="w-4 h-4" />
+                  {note.location}
+                </div>
+              )}
+              {note.checklist?.length > 0 && (
+                <div className="space-y-1.5">
+                  {note.checklist.map((item) => (
+                    <label key={item._id} className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input type="checkbox" className="checkbox checkbox-xs" checked={item.done} readOnly />
+                      <span className={item.done ? "line-through text-base-content/40" : "text-base-content/80"}>
+                        {item.text}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
             <div className="border-t border-base-content/6 pt-5 flex items-center justify-between gap-3">
