@@ -232,4 +232,53 @@ export async function checkEmail(req, res) {
         logger.error("Error in checkEmail", { error: error.message, stack: error.stack });
         res.status(500).json({ message: "Internal Server Error" });
     }
+};
+
+export async function updateProfile(req, res) {
+    try {
+        const { name } = req.body;
+        if (!name || !name.trim()) {
+            return res.status(400).json({ message: "Name is required" });
+        }
+
+        req.user.name = name.trim();
+        await req.user.save();
+
+        res.status(200).json({
+            _id: req.user._id,
+            name: req.user.name,
+            email: req.user.email,
+            theme: req.user.theme,
+            emailVerified: req.user.emailVerified,
+        });
+    } catch (error) {
+        logger.error("Error in updateProfile", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 }
+
+export async function changePassword(req, res) {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: "Current and new password required" });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: "New password must be at least 6 characters" });
+        }
+
+        const isMatch = await req.user.comparePassword(currentPassword);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Current password is incorrect" });
+        }
+
+        req.user.password = newPassword; // pre-save hook hashes it
+        await req.user.save();
+
+        res.status(200).json({ message: "Password changed successfully" });
+    } catch (error) {
+        logger.error("Error in changePassword", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};

@@ -1,16 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
-import { BookOpenIcon, LogOutIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import { BookOpenIcon, SettingsIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import ThemeToggle from "./ThemeToggle";
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-content/5 bg-base-300/80 backdrop-blur-xl">
@@ -26,15 +19,10 @@ const NavBar = () => {
           </Link>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             {user && (
-              <button
-                onClick={handleLogout}
-                className="btn btn-error btn-sm gap-2 shadow-md shadow-error/20"
-              >
-                <LogOutIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Log out</span>
-              </button>
+              <Link to="/profile" className="btn btn-ghost btn-sm btn-circle" title="Settings">
+                <SettingsIcon className="w-4 h-4" />
+              </Link>
             )}
           </div>
         </div>

@@ -4,6 +4,8 @@ import {
     login,
     getMe,
     updateTheme,
+    updateProfile,
+    changePassword,
     verifyEmail,
     resendVerification,
     forgotPassword,
@@ -21,6 +23,8 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.get("/me", protectRoute, getMe);
 router.put("/theme", protectRoute, updateTheme);
+router.put("/profile", protectRoute, updateProfile);
+router.put("/change-password", protectRoute, authRateLimiter, changePassword);
 
 router.get("/verify-email", verifyEmail);
 router.post("/resend-verification", protectRoute, authRateLimiter, resendVerification);

@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     const login = (data) => {
         localStorage.setItem("token", data.token);
         setToken(data.token);
-        setUser({ _id: data._id, name: data.name, email: data.email });
+        setUser({ _id: data._id, name: data.name, email: data.email, theme: data.theme, emailVerified: data.emailVerified });
     };
 
     const logout = () => {
@@ -39,8 +39,12 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    const updateUser = (partial) => {
+        setUser((prev) => ({ ...prev, ...partial }));
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, login, logout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );
