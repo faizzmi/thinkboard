@@ -25,7 +25,8 @@
     "morgan": "^1.11.0",
     "resend": "^6.16.0",
     "thinkboard": "file:..",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "pdfkit": "^0.15.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

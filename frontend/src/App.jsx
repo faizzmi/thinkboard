@@ -13,6 +13,8 @@ import ShortcutsModal from "./components/ShortcutsModal";
 import { Toaster } from "react-hot-toast";
 import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
 import { useShortcutsModal } from "./context/ShortcutsModalContext";
+import SplitViewPage from "./pages/SplitViewPage";
+import SharedNotePage from "./pages/SharedNotePage";
 
 const App = () => {
   const { isOpen, open, close } = useShortcutsModal();
@@ -43,6 +45,8 @@ const App = () => {
         <Route path="/note/:id" element={<ProtectedRoute><NoteDetailPage /></ProtectedRoute>} />
         <Route path="/note/edit/:id" element={<ProtectedRoute><EditNotePage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/split" element={<ProtectedRoute><SplitViewPage /></ProtectedRoute>} />
+        <Route path="/shared/:token" element={<SharedNotePage />} />
       </Routes>
 
       <ShortcutsModal isOpen={isOpen} onClose={close} />

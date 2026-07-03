@@ -38,7 +38,7 @@ export const SHORTCUT_CATEGORIES = {
     },
     {
       id: "new-note",
-      keys: ["Shift", "N"],
+      keys: ["N", "N"],
       description: "Create a new note",
       category: "notes",
     },

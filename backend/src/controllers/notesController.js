@@ -1,5 +1,7 @@
 import Note from "../models/Note.js";
 import logger from "../config/logger.js";
+import { generateRawToken } from "../utils/tokens.js";
+import PDFDocument from "pdfkit";
 
 export async function getAllNotes(req, res) {
     try {
@@ -67,5 +69,86 @@ export async function deleteNotes(req, res) {
     } catch (error) {
         logger.error("Error in deleteNotes", { error: error.message, stack: error.stack })
         res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+export async function toggleShare(req, res) {
+    try {
+        const note = await Note.findOne({ _id: req.params.id, user: req.user._id });
+        if (!note) return res.status(404).json({ message: "Note not found" });
+
+        note.shareEnabled = !note.shareEnabled;
+        if (note.shareEnabled && !note.shareToken) {
+            note.shareToken = generateRawToken();
+        }
+        await note.save();
+
+        res.status(200).json({
+            shareEnabled: note.shareEnabled,
+            shareToken: note.shareEnabled ? note.shareToken : null,
+        });
+    } catch (error) {
+        logger.error("Error in toggleShare", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function getSharedNote(req, res) {
+    try {
+        const note = await Note.findOne({ shareToken: req.params.token, shareEnabled: true });
+        if (!note) return res.status(404).json({ message: "Shared note not found" });
+
+        res.status(200).json({
+            title: note.title,
+            content: note.content,
+            type: note.type,
+            priority: note.priority,
+            deadline: note.deadline,
+            location: note.location,
+            checklist: note.checklist,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
+        });
+    } catch (error) {
+        logger.error("Error in getSharedNote", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function exportNotePdf(req, res) {
+    try {
+        const note = await Note.findOne({ _id: req.params.id, user: req.user._id });
+        if (!note) return res.status(404).json({ message: "Note not found" });
+
+        const doc = new PDFDocument({ margin: 50 });
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename="${note.title.replace(/[^a-z0-9]/gi, "_")}.pdf"`);
+        doc.pipe(res);
+
+        doc.fontSize(20).text(note.title, { underline: false });
+        doc.moveDown(0.5);
+        doc.fontSize(9).fillColor("#888").text(`Created ${note.createdAt.toDateString()}`);
+        doc.moveDown(1);
+        doc.fontSize(12).fillColor("#000").text(note.content, { align: "left" });
+
+        if (note.deadline) {
+            doc.moveDown(1);
+            doc.fontSize(11).fillColor("#333").text(`Deadline: ${new Date(note.deadline).toLocaleString()}`);
+        }
+        if (note.location) {
+            doc.fontSize(11).fillColor("#333").text(`Location: ${note.location}`);
+        }
+        if (note.checklist?.length > 0) {
+            doc.moveDown(1);
+            doc.fontSize(12).fillColor("#000").text("Checklist:");
+            note.checklist.forEach((item) => {
+                doc.fontSize(11).text(`${item.done ? "[x]" : "[ ]"} ${item.text}`);
+            });
+        }
+
+        doc.end();
+    } catch (error) {
+        logger.error("Error in exportNotePdf", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }

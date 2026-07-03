@@ -12,7 +12,7 @@ import morgan from "morgan";
 import logger from "./config/logger.js";
 import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
 import logsRoutes from "./routes/logsRoutes.js"
-
+import publicRoutes from "./routes/publicRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { env } from "process";
 
@@ -46,6 +46,7 @@ app.use(morgan(
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/logs", logsRoutes);
+app.use("/api/public", publicRoutes);
 
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception", { message: err.message, stack: err.stack });

@@ -46,6 +46,16 @@ const noteSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        shareEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        shareToken: {
+            type: String,
+            default: null,
+            index: true,
+            sparse: true,
+        },
     },
     { timestamps: true }
 );
