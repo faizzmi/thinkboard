@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpenIcon, SettingsIcon } from "lucide-react";
+import { BookOpenIcon, SettingsIcon, KeyboardIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
@@ -20,9 +20,14 @@ const NavBar = () => {
 
           <div className="flex items-center gap-2">
             {user && (
-              <Link to="/profile" className="btn btn-ghost btn-sm btn-circle" title="Settings">
-                <SettingsIcon className="w-4 h-4" />
-              </Link>
+              <>
+                <Link to="/shortcuts" className="btn btn-ghost btn-sm btn-circle" title="Keyboard shortcuts">
+                  <KeyboardIcon className="w-4 h-4" />
+                </Link>
+                <Link to="/profile" className="btn btn-ghost btn-sm btn-circle" title="Settings">
+                  <SettingsIcon className="w-4 h-4" />
+                </Link>
+              </>
             )}
           </div>
         </div>

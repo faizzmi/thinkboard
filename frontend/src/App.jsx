@@ -1,17 +1,29 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 import CreatePage from "./pages/CreatePage";
 import EditNotePage from "./pages/EditNotePage";
+import AuthPage from "./pages/AuthPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProfilePage from "./pages/ProfilePage";
+import ShortcutsPage from "./pages/ShortCutsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
-import AuthPage from "./pages/AuthPage";
-import ProfilePage from "./pages/ProfilePage";
+import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
 
 const App = () => {
+  const navigate = useNavigate();
+
+  useGlobalShortcuts({
+    onOpenPalette: () => {
+      // command palette doesn't exist yet (future feature) — for now, no-op
+      // once built, this will open that component's modal state
+    },
+    onOpenShortcutsRef: () => navigate("/shortcuts"),
+  });
+
   return (
     <div className="relative min-h-screen w-full bg-base-200">
       <div className="fixed inset-0 -z-10 h-full w-full bg-base-200">
@@ -25,6 +37,7 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/shortcuts" element={<ProtectedRoute><ShortcutsPage /></ProtectedRoute>} />
         <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/create" element={<ProtectedRoute><CreatePage /></ProtectedRoute>} />
         <Route path="/note/:id" element={<ProtectedRoute><NoteDetailPage /></ProtectedRoute>} />
