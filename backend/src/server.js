@@ -26,7 +26,7 @@ const __dirname = path.resolve()
 Sentry.init({
     dsn: process.env.SENTRY_DSN_BACKEND,
     environment: process.env.NODE_ENV,
-    tracesSampling: 1.0,
+    tracesSampleRate: 1.0,
 });
 
 if (process.env.NODE_ENV !== "production"){

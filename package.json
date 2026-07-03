@@ -2,7 +2,7 @@
   "name": "thinkboard",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts":{
+  "scripts": {
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "npm run start --prefix backend",
     "test": "npm run test --prefix backend && npm run test --prefix frontend"
@@ -10,5 +10,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@sentry/node": "^10.63.0"
+  }
 }

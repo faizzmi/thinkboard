@@ -24,7 +24,27 @@ const userSchema = new mongoose.Schema(
         theme: {
             type: String,
             default: "light",
-        }
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationTokenHash: {
+            type: String,
+            default: null,
+        },
+        verificationTokenExpires: {
+            type: Date,
+            default: null,
+        },
+        resetTokenHash: {
+            type: String,
+            default: null,
+        },
+        resetTokenExpires: {
+            type: Date,
+            default: null,
+        },
     },
     { timestamps: true }
 );

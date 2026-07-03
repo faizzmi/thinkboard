@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node src/server.js",
     "test": "mocha",
-  "test:coverage": "c8 --reporter=text --reporter=lcov mocha"
+    "test:coverage": "c8 --reporter=text --reporter=lcov mocha"
   },
   "type": "module",
   "author": "Faiz",
@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.2",
     "morgan": "^1.11.0",
+    "resend": "^6.16.0",
     "thinkboard": "file:..",
     "winston": "^3.19.0"
   },
@@ -30,6 +31,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
     "chai": "^6.2.2",
+    "cross-env": "^10.1.0",
     "mocha": "^11.7.6",
     "mongodb-memory-server": "^11.2.0",
     "nodemon": "^3.1.14",
