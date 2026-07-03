@@ -36,15 +36,15 @@ const ProfilePage = () => {
         <h1 className="text-2xl font-bold text-base-content mb-6">Settings</h1>
 
         <div className="space-y-6">
-          <section className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 p-6 sm:p-8">
+          <section className="glass-panel glass-highlight">
             <AccountSettings />
           </section>
 
-          <section className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 p-6 sm:p-8">
+          <section className="glass-panel glass-highlight">
             <AppearanceSettings />
           </section>
 
-          <section className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 p-6 sm:p-8">
+          <section className="glass-panel glass-highlight">
             <SecuritySettings />
           </section>
 

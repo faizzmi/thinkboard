@@ -31,7 +31,7 @@ const VerifyEmailPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl p-8 text-center space-y-4">
+      <div className="w-full max-w-sm glass-panel glass-highlight p-8 text-center space-y-4">
         {status === "verifying" && (
           <>
             <span className="loading loading-spinner loading-lg text-primary" />

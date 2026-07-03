@@ -78,7 +78,7 @@ const AuthPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 p-6 sm:p-8 animate-slide-up">
+      <div className="w-full max-w-sm glass-panel glass-highlight shadow-base-content/5 p-6 sm:p-8 animate-slide-up">
         {/* Tabs */}
         <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-base-200/60 mb-6">
           <button

@@ -3,7 +3,7 @@ import { ZapIcon, RefreshCwIcon } from "lucide-react";
 const RateLimitedUI = ({ onRetry }) => {
   return (
     <div className="flex items-center justify-center px-4 py-16">
-      <div className="card bg-base-100/60 backdrop-blur-sm border border-base-content/8 shadow-xl max-w-sm w-full animate-fade-in">
+      <div className="glass-panel max-w-sm w-full animate-fade-in">
         <div className="card-body items-center text-center gap-5 py-10">
           <div className="relative">
             <div className="absolute inset-0 bg-warning/20 rounded-full blur-xl animate-pulse-slow" />

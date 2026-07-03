@@ -88,7 +88,7 @@ const NoteDetailPage = () => {
           Back to notes
         </Link>
 
-        <article className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 animate-slide-up overflow-hidden">
+        <article className="glass-panel glass-highlight shadow-base-content/5 animate-slide-up overflow-hidden">
 
           <div className="h-1 w-full bg-gradient-to-r from-primary/60 via-primary/30 to-transparent" />
 

@@ -60,7 +60,7 @@ const CreatePage = () => {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 animate-slide-up">
+        <div className="glass-panel glass-highlight shadow-base-content/5 animate-slide-up">
           <div className="p-6 sm:p-8">
             <h1 className="text-xl font-bold text-base-content mb-6">
               New note

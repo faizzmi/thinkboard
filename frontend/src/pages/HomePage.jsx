@@ -120,7 +120,7 @@ const HomePage = () => {
                 placeholder="Search notes..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="input input-bordered input-sm w-full pl-9 bg-base-100/60 backdrop-blur-sm focus:border-primary/50 focus:outline-none"
+                className="input input-bordered input-sm w-full pl-9 glass-panel-subtle focus:border-primary/50 focus:outline-none"
               />
             </div>
 

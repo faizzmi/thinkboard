@@ -17,7 +17,7 @@ const NoteCard = ({ note, onDelete }) => {
   return (
     <Link
       to={`/note/${note._id}`}
-      className="group flex flex-col rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm p-5 hover:border-primary/30 hover:bg-base-100/80 hover:shadow-lg hover:shadow-primary/5 transition-all duration-200 animate-fade-in"
+      className="group flex flex-col glass-panel p-5 hover:border-primary/30 hover:bg-base-100/80 hover:shadow-glass-lg transition-all duration-200 ease-glass animate-fade-in"
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2 mb-3">

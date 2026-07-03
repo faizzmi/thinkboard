@@ -8,9 +8,24 @@ export default {
         mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
         sans: ["'Inter'", "ui-sans-serif", "system-ui"],
       },
+      borderRadius: {
+        glass: "1.25rem",
+      },
+      backdropBlur: {
+        glass: "20px",
+        "glass-strong": "32px",
+      },
+      boxShadow: {
+        "glass-sm": "0 2px 12px -2px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04)",
+        glass: "0 8px 32px -4px rgba(0, 0, 0, 0.10), 0 2px 8px -2px rgba(0, 0, 0, 0.06)",
+        "glass-lg": "0 16px 48px -8px rgba(0, 0, 0, 0.16), 0 4px 16px -4px rgba(0, 0, 0, 0.08)",
+      },
+      transitionTimingFunction: {
+        glass: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out",
-        "slide-up": "slideUp 0.3s ease-out",
+        "slide-up": "slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {

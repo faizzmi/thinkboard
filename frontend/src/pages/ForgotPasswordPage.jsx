@@ -33,7 +33,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl p-6 sm:p-8">
+      <div className="w-full max-w-sm glass-panel glass-highlight p-6 sm:p-8">
         <div className="flex items-center gap-2.5 mb-6">
           <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/15 ring-1 ring-primary/20">
             <KeyRoundIcon className="w-4 h-4 text-primary" />

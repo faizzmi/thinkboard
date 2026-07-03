@@ -96,7 +96,7 @@ const EditNotePage = () => {
           Back to note
         </Link>
 
-        <div className="rounded-2xl border border-base-content/8 bg-base-100/60 backdrop-blur-sm shadow-xl shadow-base-content/5 animate-slide-up">
+        <div className="glass-panel glass-highlight shadow-base-content/5 animate-slide-up">
 
           {/* Edit mode accent bar - amber to distinguish from detail view */}
           <div className="h-1 w-full bg-gradient-to-r from-warning/70 via-warning/30 to-transparent rounded-t-2xl" />

@@ -8,7 +8,7 @@ const NavBar = () => {
   const { open } = useShortcutsModal();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-base-content/5 bg-base-300/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 glass-nav">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5 group">

@@ -36,7 +36,7 @@ const ConfirmModal = ({
       />
 
       {/* Panel */}
-      <div className="relative w-full max-w-sm rounded-2xl border border-base-content/8 bg-base-100/90 backdrop-blur-md shadow-2xl shadow-base-content/10 animate-slide-up">
+      <div className="relative w-full max-w-md max-h-[80vh] overflow-y-auto glass-panel-strong glass-highlight animate-slide-up">
 
         {/* Top accent */}
         <div className={`h-1 w-full rounded-t-2xl bg-gradient-to-r from-${confirmVariant}/70 via-${confirmVariant}/30 to-transparent`} />
