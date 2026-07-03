@@ -16,6 +16,7 @@ import { useShortcutsModal } from "./context/ShortcutsModalContext";
 import SplitViewPage from "./pages/SplitViewPage";
 import SharedNotePage from "./pages/SharedNotePage";
 import DashboardPage from "./pages/DashboardPage";
+import LandingPage from "./pages/LandingPage";
 
 const App = () => {
   const { isOpen, open, close } = useShortcutsModal();
@@ -36,6 +37,7 @@ const App = () => {
       </div>
 
       <Routes>
+        <Route path="/welcome" element={<LandingPage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/signup" element={<AuthPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
