@@ -8,11 +8,14 @@ import {
     resendVerification,
     forgotPassword,
     resetPassword,
+    checkEmail,
 } from "../controllers/authController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
 import authRateLimiter from "../middleware/authRateLimiter.js";
 
 const router = express.Router();
+
+router.get("/check-email", authRateLimiter, checkEmail);
 
 router.post("/signup", signup);
 router.post("/login", login);

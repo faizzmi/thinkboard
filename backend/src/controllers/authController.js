@@ -218,3 +218,18 @@ export async function resetPassword(req, res) {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export async function checkEmail(req, res) {
+    try {
+        const { email } = req.query;
+        if (!email) {
+            return res.status(400).json({ message: "Email required" });
+        }
+
+        const user = await User.findOne({ email: email.toLowerCase().trim() });
+        res.status(200).json({ exists: !!user });
+    } catch (error) {
+        logger.error("Error in checkEmail", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
