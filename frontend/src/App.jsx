@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 import CreatePage from "./pages/CreatePage";
@@ -8,20 +8,21 @@ import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
-import ShortcutsPage from "./pages/ShortCutsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ShortcutsModal from "./components/ShortcutsModal";
 import { Toaster } from "react-hot-toast";
 import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
+import { useShortcutsModal } from "./context/ShortcutsModalContext";
 
 const App = () => {
-  const navigate = useNavigate();
+  const { isOpen, open, close } = useShortcutsModal();
 
   useGlobalShortcuts({
     onOpenPalette: () => {
       // command palette doesn't exist yet (future feature) — for now, no-op
       // once built, this will open that component's modal state
     },
-    onOpenShortcutsRef: () => navigate("/shortcuts"),
+    onOpenShortcutsRef: open,
   });
 
   return (
@@ -37,13 +38,14 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/shortcuts" element={<ProtectedRoute><ShortcutsPage /></ProtectedRoute>} />
         <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/create" element={<ProtectedRoute><CreatePage /></ProtectedRoute>} />
         <Route path="/note/:id" element={<ProtectedRoute><NoteDetailPage /></ProtectedRoute>} />
         <Route path="/note/edit/:id" element={<ProtectedRoute><EditNotePage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       </Routes>
+
+      <ShortcutsModal isOpen={isOpen} onClose={close} />
 
       <Toaster
         position="bottom-right"

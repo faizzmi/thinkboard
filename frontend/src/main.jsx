@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
+import { ShortcutsModalProvider } from './context/ShortcutsModalContext.jsx'
 import { logClientError } from './lib/logger.js'
 import * as Sentry from "@sentry/react";
 
@@ -28,7 +29,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <AuthProvider>
           <ThemeProvider>
-            <App />
+            <ShortcutsModalProvider>
+              <App />
+            </ShortcutsModalProvider>
           </ThemeProvider>
         </AuthProvider>
       </BrowserRouter>

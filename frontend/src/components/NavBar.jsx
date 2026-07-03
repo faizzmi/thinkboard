@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { BookOpenIcon, SettingsIcon, KeyboardIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useShortcutsModal } from "../context/ShortcutsModalContext";
 
 const NavBar = () => {
   const { user } = useAuth();
+  const { open } = useShortcutsModal();
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-content/5 bg-base-300/80 backdrop-blur-xl">
@@ -21,9 +23,9 @@ const NavBar = () => {
           <div className="flex items-center gap-2">
             {user && (
               <>
-                <Link to="/shortcuts" className="btn btn-ghost btn-sm btn-circle" title="Keyboard shortcuts">
+                <button onClick={open} className="btn btn-ghost btn-sm btn-circle" title="Keyboard shortcuts">
                   <KeyboardIcon className="w-4 h-4" />
-                </Link>
+                </button>
                 <Link to="/profile" className="btn btn-ghost btn-sm btn-circle" title="Settings">
                   <SettingsIcon className="w-4 h-4" />
                 </Link>
