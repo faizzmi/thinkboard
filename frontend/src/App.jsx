@@ -15,6 +15,7 @@ import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
 import { useShortcutsModal } from "./context/ShortcutsModalContext";
 import SplitViewPage from "./pages/SplitViewPage";
 import SharedNotePage from "./pages/SharedNotePage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
   const { isOpen, open, close } = useShortcutsModal();
@@ -40,13 +41,14 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+        <Route path="/notes" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/create" element={<ProtectedRoute><CreatePage /></ProtectedRoute>} />
         <Route path="/note/:id" element={<ProtectedRoute><NoteDetailPage /></ProtectedRoute>} />
         <Route path="/note/edit/:id" element={<ProtectedRoute><EditNotePage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/split" element={<ProtectedRoute><SplitViewPage /></ProtectedRoute>} />
         <Route path="/shared/:token" element={<SharedNotePage />} />
+        <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
       </Routes>
 
       <ShortcutsModal isOpen={isOpen} onClose={close} />

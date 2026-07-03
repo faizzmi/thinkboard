@@ -135,7 +135,7 @@ const SplitViewPage = () => {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <Link
-          to="/"
+          to="/notes"
           className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"
         >
           <ArrowLeftIcon className="w-4 h-4" />
@@ -154,7 +154,7 @@ const SplitViewPage = () => {
           <p className="text-sm text-base-content/50 mb-4">
             Split view needs a bigger screen. Try this on a laptop or larger display.
           </p>
-          <Link to="/" className="btn btn-primary btn-sm">
+          <Link to="/notes" className="btn btn-primary btn-sm">
             Back to notes
           </Link>
         </div>

@@ -23,3 +23,12 @@ export function getPriorityColor(priority) {
             return "neutral";
     }
 }
+
+export function getDaysUntil(date) {
+    const diff = new Date(date).getTime() - Date.now();
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    if (days === 0) return "Today";
+    if (days === 1) return "Tomorrow";
+    if (days < 0) return `${Math.abs(days)}d overdue`;
+    return `In ${days}d`;
+}

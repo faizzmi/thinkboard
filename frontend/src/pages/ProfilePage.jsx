@@ -25,13 +25,6 @@ const ProfilePage = () => {
       <NavBar />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"
-        >
-          <ArrowLeftIcon className="w-4 h-4" />
-          Back to notes
-        </Link>
 
         <h1 className="text-2xl font-bold text-base-content mb-6">Settings</h1>
 

@@ -152,3 +152,56 @@ export async function exportNotePdf(req, res) {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export async function getDashboardData(req, res) {
+    try {
+        const userId = req.user._id;
+        const now = new Date();
+        const sevenDaysOut = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+        const notesWithDeadline = await Note.find({
+            user: userId,
+            deadline: { $ne: null },
+        }).sort({ deadline: 1 });
+
+        const upcoming = notesWithDeadline.filter(
+            (n) => n.deadline >= now && n.deadline <= sevenDaysOut
+        );
+        const overdue = notesWithDeadline.filter((n) => n.deadline < now);
+
+        const allNotes = await Note.find({ user: userId });
+
+        let totalChecklistItems = 0;
+        let doneChecklistItems = 0;
+        const typeCounts = { note: 0, task: 0, event: 0 };
+        const priorityCounts = { low: 0, medium: 0, high: 0 };
+
+        allNotes.forEach((n) => {
+            typeCounts[n.type] = (typeCounts[n.type] || 0) + 1;
+            priorityCounts[n.priority] = (priorityCounts[n.priority] || 0) + 1;
+            if (n.checklist?.length) {
+                totalChecklistItems += n.checklist.length;
+                doneChecklistItems += n.checklist.filter((i) => i.done).length;
+            }
+        });
+
+        res.status(200).json({
+            upcoming,
+            overdue,
+            deadlineDates: notesWithDeadline.map((n) => n.deadline),
+            checklistProgress: {
+                total: totalChecklistItems,
+                done: doneChecklistItems,
+                percent: totalChecklistItems > 0
+                    ? Math.round((doneChecklistItems / totalChecklistItems) * 100)
+                    : 0,
+            },
+            typeCounts,
+            priorityCounts,
+            totalNotes: allNotes.length,
+        });
+    } catch (error) {
+        logger.error("Error in getDashboardData", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
