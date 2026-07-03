@@ -17,6 +17,7 @@ import SplitViewPage from "./pages/SplitViewPage";
 import SharedNotePage from "./pages/SharedNotePage";
 import DashboardPage from "./pages/DashboardPage";
 import LandingPage from "./pages/LandingPage";
+import NotFoundRedirect from "./components/NotFoundRedirect";
 
 const App = () => {
   const { isOpen, open, close } = useShortcutsModal();
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/split" element={<ProtectedRoute><SplitViewPage /></ProtectedRoute>} />
         <Route path="/shared/:token" element={<SharedNotePage />} />
         <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="*" element={<NotFoundRedirect />} />
       </Routes>
 
       <ShortcutsModal isOpen={isOpen} onClose={close} />
@@ -60,15 +62,10 @@ const App = () => {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "hsl(var(--b1))",
-            color: "hsl(var(--bc))",
-            border: "1px solid hsl(var(--b3))",
             borderRadius: "12px",
             fontSize: "14px",
             fontFamily: "'Inter', sans-serif",
           },
-          success: { iconTheme: { primary: "hsl(var(--p))", secondary: "hsl(var(--pc))" } },
-          error: { iconTheme: { primary: "hsl(var(--er))", secondary: "hsl(var(--erc))" } },
         }}
       />
     </div>

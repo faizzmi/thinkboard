@@ -47,12 +47,12 @@ const SecuritySettings = () => {
     <div className="space-y-6 p-6">
       <div>
         <h2 className="text-lg font-semibold text-base-content mb-1">Security</h2>
-        <p className="text-sm text-base-content/50">Change your password</p>
+        <p className="text-sm text-ink-muted">Change your password</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
         <div className="form-control gap-2">
-          <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+          <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
             <LockIcon className="w-3.5 h-3.5" />
             Current password
           </label>
@@ -65,7 +65,7 @@ const SecuritySettings = () => {
         </div>
 
         <div className="form-control gap-2">
-          <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+          <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
             <KeyRoundIcon className="w-3.5 h-3.5" />
             New password
           </label>
@@ -78,7 +78,7 @@ const SecuritySettings = () => {
         </div>
 
         <div className="form-control gap-2">
-          <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+          <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
             <KeyRoundIcon className="w-3.5 h-3.5" />
             Confirm new password
           </label>

@@ -54,7 +54,7 @@ const ResetPasswordPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-control gap-2">
-            <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+            <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
               <LockIcon className="w-3.5 h-3.5" />
               New password
             </label>
@@ -68,7 +68,7 @@ const ResetPasswordPage = () => {
           </div>
 
           <div className="form-control gap-2">
-            <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+            <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
               <LockIcon className="w-3.5 h-3.5" />
               Confirm password
             </label>
@@ -85,7 +85,7 @@ const ResetPasswordPage = () => {
           </button>
         </form>
 
-        <Link to="/login" className="block text-center text-sm text-base-content/50 hover:text-base-content mt-6">
+        <Link to="/login" className="block text-center text-sm text-ink-muted hover:text-base-content mt-6">
           Back to login
         </Link>
       </div>

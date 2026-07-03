@@ -87,7 +87,7 @@ const AuthPage = () => {
             className={`flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors ${
               tab === "login"
                 ? "bg-base-100 text-primary shadow-sm"
-                : "text-base-content/50 hover:text-base-content"
+                : "text-ink-muted hover:text-base-content"
             }`}
           >
             <LogInIcon className="w-3.5 h-3.5" />
@@ -99,7 +99,7 @@ const AuthPage = () => {
             className={`flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors ${
               tab === "signup"
                 ? "bg-base-100 text-primary shadow-sm"
-                : "text-base-content/50 hover:text-base-content"
+                : "text-ink-muted hover:text-base-content"
             }`}
           >
             <UserPlusIcon className="w-3.5 h-3.5" />
@@ -111,7 +111,7 @@ const AuthPage = () => {
         {tab === "login" && (
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="form-control gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 <MailIcon className="w-3.5 h-3.5" />
                 Email
               </label>
@@ -125,7 +125,7 @@ const AuthPage = () => {
             </div>
 
             <div className="form-control gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 <LockIcon className="w-3.5 h-3.5" />
                 Password
               </label>
@@ -141,7 +141,7 @@ const AuthPage = () => {
               {submitting ? <span className="loading loading-spinner loading-xs" /> : "Log in"}
             </button>
 
-            <Link to="/forgot-password" className="block text-center text-sm text-base-content/40 hover:text-base-content transition-colors">
+            <Link to="/forgot-password" className="block text-center text-sm text-ink-subtle hover:text-base-content transition-colors">
               Forgot your password?
             </Link>
           </form>
@@ -151,7 +151,7 @@ const AuthPage = () => {
         {tab === "signup" && (
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="form-control gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 <UserIcon className="w-3.5 h-3.5" />
                 Name
               </label>
@@ -165,7 +165,7 @@ const AuthPage = () => {
             </div>
 
             <div className="form-control gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 <MailIcon className="w-3.5 h-3.5" />
                 Email
               </label>
@@ -178,7 +178,7 @@ const AuthPage = () => {
             </div>
 
             <div className="form-control gap-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 <LockIcon className="w-3.5 h-3.5" />
                 Password
               </label>

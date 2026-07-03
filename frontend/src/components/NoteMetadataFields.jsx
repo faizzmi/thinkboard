@@ -31,7 +31,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
     <div className="space-y-5">
       {/* type */}
       <div className="form-control gap-2">
-        <label className="text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="text-xs font-semibold text-ink-muted uppercase tracking-widest">
           Type
         </label>
         <div className="join">
@@ -50,7 +50,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
 
       {/* priority */}
       <div className="form-control gap-2">
-        <label className="text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="text-xs font-semibold text-ink-muted uppercase tracking-widest">
           Priority
         </label>
         <div className="join">
@@ -69,7 +69,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
 
       {/* deadline */}
       <div className="form-control gap-2">
-        <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
           <CalendarClockIcon className="w-3.5 h-3.5" />
           Deadline
         </label>
@@ -83,7 +83,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
 
       {/* location */}
       <div className="form-control gap-2">
-        <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
           <MapPinIcon className="w-3.5 h-3.5" />
           Location
         </label>
@@ -98,7 +98,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
 
       {/* checklist */}
       <div className="form-control gap-2">
-        <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
           <ListChecksIcon className="w-3.5 h-3.5" />
           Checklist
         </label>
@@ -123,7 +123,7 @@ const NoteMetadataFields = ({ note, setNote }) => {
                 <button
                   type="button"
                   onClick={() => removeChecklistItem(id)}
-                  className="btn btn-ghost btn-xs btn-circle text-base-content/40 hover:text-error"
+                  className="btn btn-ghost btn-xs btn-circle text-ink-subtle hover:text-error"
                 >
                   <XIcon className="w-3.5 h-3.5" />
                 </button>

@@ -48,6 +48,6 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "dark", "cyberpunk", "bumblebee", "retro", "halloween", "forest", "black", "lofi", "luxury", "coffee", "nord"],
+    themes: true,
   },
 }

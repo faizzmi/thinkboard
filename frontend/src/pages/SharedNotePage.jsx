@@ -44,7 +44,7 @@ const SharedNotePage = () => {
 
         {!loading && error && (
           <div className="glass-panel p-8 text-center space-y-3">
-            <p className="text-sm text-base-content/60">
+            <p className="text-sm text-ink-muted">
               This link is invalid or sharing has been turned off.
             </p>
             <Link to="/" className="btn btn-primary btn-sm">

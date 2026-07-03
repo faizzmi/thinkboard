@@ -114,7 +114,7 @@ const EditNotePage = () => {
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-28 sm:pb-8">
         <Link
           to={`/note/${id}`}
-          className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-ink-subtle hover:text-base-content transition-colors mb-6"
         >
           <ArrowLeftIcon className="w-4 h-4" />
           Back to note
@@ -127,7 +127,7 @@ const EditNotePage = () => {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h1 className="text-xl font-bold text-base-content">Edit note</h1>
-                <p className="text-xs text-base-content/35 mt-0.5">
+                <p className="text-xs text-ink-subtle mt-0.5">
                   Changes won't be saved until you click Save
                 </p>
               </div>
@@ -140,7 +140,7 @@ const EditNotePage = () => {
 
             <div className="space-y-5 mb-5">
               <div className="form-control gap-2">
-                <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+                <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                   <TypeIcon className="w-3.5 h-3.5" />
                   Title
                 </label>
@@ -157,7 +157,7 @@ const EditNotePage = () => {
               </div>
 
               <div className="form-control gap-2">
-                <label className="flex items-center gap-2 text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+                <label className="flex items-center gap-2 text-xs font-semibold text-ink-muted uppercase tracking-widest">
                   <AlignLeftIcon className="w-3.5 h-3.5" />
                   Content
                 </label>
@@ -170,7 +170,7 @@ const EditNotePage = () => {
                   }
                   onKeyDown={handleKeyDown}
                 />
-                <p className={`text-xs text-right ${remaining < 100 ? "text-warning" : "text-base-content/25"}`}>
+                <p className={`text-xs text-right ${remaining < 100 ? "text-warning" : "text-ink-faint"}`}>
                   {remaining} characters remaining
                 </p>
               </div>
@@ -181,7 +181,7 @@ const EditNotePage = () => {
             <NoteMetadataFields note={note} setNote={setNote} />
 
             {createdAt && (
-              <div className="flex items-center gap-1.5 mt-6 text-xs text-base-content/30">
+              <div className="flex items-center gap-1.5 mt-6 text-xs text-ink-faint">
                 <CalendarIcon className="w-3.5 h-3.5" />
                 Created {formatDate(new Date(createdAt))}
               </div>
@@ -190,7 +190,7 @@ const EditNotePage = () => {
             <div className="border-t border-base-content/6 my-6" />
 
             <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
-              <p className="text-xs text-base-content/25">
+              <p className="text-xs text-ink-faint">
                 <kbd className="kbd kbd-xs">Ctrl</kbd> +{" "}
                 <kbd className="kbd kbd-xs">Enter</kbd> to save
               </p>

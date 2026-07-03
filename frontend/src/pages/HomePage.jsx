@@ -20,7 +20,7 @@ const EmptyState = () => (
       </div>
     </div>
     <h3 className="text-lg font-semibold text-base-content mb-2">No notes yet</h3>
-    <p className="text-sm text-base-content/50 mb-6 text-center max-w-xs">
+    <p className="text-sm text-ink-muted mb-6 text-center max-w-xs">
       Start capturing your thoughts. Your first note is one click away.
     </p>
     <Link to="/create" className="btn btn-primary btn-sm gap-2 shadow-lg shadow-primary/20">
@@ -154,17 +154,17 @@ const HomePage = () => {
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-base-content">
                 {user.name}'s Notes
-                <span className="ml-2 text-sm font-normal text-base-content/40 font-mono">
+                <span className="ml-2 text-sm font-normal text-ink-subtle font-mono">
                   ({totalNotes})
                 </span>
               </h2>
-              <p className="text-sm text-base-content/45 mt-0.5">
+              <p className="text-sm text-ink-subtle mt-0.5">
                 {totalNotes === 1 ? "1 note saved" : `${totalNotes} notes saved`}
               </p>
             </div>
 
             <div className="relative w-full sm:w-64">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint" />
               <input
                 type="text"
                 placeholder="Search notes..."
@@ -211,12 +211,12 @@ const HomePage = () => {
 
         {!isLoading && !isRateLimited && totalNotes > 0 && filtered.length === 0 && (
           <div className="text-center py-16 animate-fade-in">
-            <p className="text-base-content/40 text-sm">
+            <p className="text-ink-subtle text-sm">
               No notes match <span className="text-primary">"{search}"</span>
             </p>
             <button
               onClick={() => setSearch("")}
-              className="btn btn-ghost btn-xs mt-3 text-base-content/40"
+              className="btn btn-ghost btn-xs mt-3 text-ink-subtle"
             >
               Clear search
             </button>
@@ -251,7 +251,7 @@ const HomePage = () => {
             )}
 
             {!search && !hasMore && notes.length > PAGE_SIZE && (
-              <p className="text-center text-xs text-base-content/30 pt-4">
+              <p className="text-center text-xs text-ink-faint pt-4">
                 You've reached the end — {totalNotes} notes total
               </p>
             )}

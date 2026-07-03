@@ -25,8 +25,11 @@ export function getPriorityColor(priority) {
 }
 
 export function getDaysUntil(date) {
-    const diff = new Date(date).getTime() - Date.now();
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    const target = new Date(date);
+    const now = new Date();
+    const targetDay = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+    const nowDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const days = Math.round((targetDay - nowDay) / (1000 * 60 * 60 * 24));
     if (days === 0) return "Today";
     if (days === 1) return "Tomorrow";
     if (days < 0) return `${Math.abs(days)}d overdue`;

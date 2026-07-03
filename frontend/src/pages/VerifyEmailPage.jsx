@@ -35,7 +35,7 @@ const VerifyEmailPage = () => {
         {status === "verifying" && (
           <>
             <span className="loading loading-spinner loading-lg text-primary" />
-            <p className="text-base-content/60">Verifying your email...</p>
+            <p className="text-ink-muted">Verifying your email...</p>
           </>
         )}
 
@@ -43,7 +43,7 @@ const VerifyEmailPage = () => {
           <>
             <CheckCircleIcon className="w-12 h-12 text-success mx-auto" />
             <h1 className="text-xl font-bold">Email verified!</h1>
-            <p className="text-sm text-base-content/60">Your account is now fully verified.</p>
+            <p className="text-sm text-ink-muted">Your account is now fully verified.</p>
             <Link to="/" className="btn btn-primary btn-sm">Go to ThinkBoard</Link>
           </>
         )}
@@ -52,7 +52,7 @@ const VerifyEmailPage = () => {
           <>
             <XCircleIcon className="w-12 h-12 text-error mx-auto" />
             <h1 className="text-xl font-bold">Verification failed</h1>
-            <p className="text-sm text-base-content/60">{message}</p>
+            <p className="text-sm text-ink-muted">{message}</p>
             <Link to="/login" className="btn btn-ghost btn-sm gap-2">
               <MailIcon className="w-4 h-4" />
               Back to login

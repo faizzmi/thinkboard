@@ -54,7 +54,7 @@ const ConfirmModal = ({
               >
                 {title}
               </h2>
-              <p className="text-sm text-base-content/55 mt-1 leading-relaxed">
+              <p className="text-sm text-ink-muted mt-1 leading-relaxed">
                 {message}
               </p>
             </div>

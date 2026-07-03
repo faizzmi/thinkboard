@@ -55,7 +55,7 @@ const NoteColumn = ({ slot, noteId, onPick }) => {
     <div className="glass-panel glass-highlight overflow-hidden flex flex-col min-h-[400px]">
       <div className="p-4 border-b border-base-content/6">
         <div className="relative">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/30" />
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint" />
           <input
             type="text"
             placeholder="Pick a note for this column..."
@@ -79,7 +79,7 @@ const NoteColumn = ({ slot, noteId, onPick }) => {
               </button>
             ))}
             {filtered.length === 0 && (
-              <p className="text-xs text-base-content/30 px-3 py-1.5">No matches</p>
+              <p className="text-xs text-ink-faint px-3 py-1.5">No matches</p>
             )}
           </div>
         )}
@@ -95,7 +95,7 @@ const NoteColumn = ({ slot, noteId, onPick }) => {
         )}
 
         {!loading && !note && (
-          <div className="flex items-center justify-center h-full py-16 text-sm text-base-content/35">
+          <div className="flex items-center justify-center h-full py-16 text-sm text-ink-subtle">
             Search above to open a note here
           </div>
         )}
@@ -140,7 +140,7 @@ const SplitViewPage = () => {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <Link
           to="/notes"
-          className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-ink-subtle hover:text-base-content transition-colors mb-6"
         >
           <ArrowLeftIcon className="w-4 h-4" />
           Back to notes
@@ -155,7 +155,7 @@ const SplitViewPage = () => {
 
         {/* below lg, split view doesn't make sense - point back to single view */}
         <div className="lg:hidden glass-panel p-8 text-center">
-          <p className="text-sm text-base-content/50 mb-4">
+          <p className="text-sm text-ink-muted mb-4">
             Split view needs a bigger screen. Try this on a laptop or larger display.
           </p>
           <Link to="/notes" className="btn btn-primary btn-sm">

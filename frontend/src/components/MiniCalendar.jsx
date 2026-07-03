@@ -50,7 +50,7 @@ const MiniCalendar = ({ markedDates = [], selectedDate, onSelectDate }) => {
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-xs text-base-content/35 mb-1">
+      <div className="grid grid-cols-7 gap-1 text-center text-xs text-ink-subtle mb-1">
         {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
           <span key={i}>{d}</span>
         ))}
@@ -65,7 +65,7 @@ const MiniCalendar = ({ markedDates = [], selectedDate, onSelectDate }) => {
               key={i}
               onClick={() => onSelectDate(new Date(year, month, day))}
               className={`aspect-square rounded-lg text-xs flex items-center justify-center relative transition-colors
-                ${isSelected(day) ? "bg-primary text-primary-content" : "hover:bg-base-200/60"}
+                ${isSelected(day) || isMarked(day) ? "bg-primary text-primary-content" : "hover:bg-base-200/60"}
                 ${isToday(day) && !isSelected(day) ? "ring-1 ring-primary/40" : ""}
               `}
             >

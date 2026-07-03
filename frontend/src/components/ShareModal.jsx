@@ -63,7 +63,7 @@ const ShareModal = ({ isOpen, onClose, note, onShareChange }) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-base-content/70">
+            <span className="text-sm text-ink">
               {note.shareEnabled ? "Sharing is on" : "Enable read-only link"}
             </span>
             <input
@@ -78,8 +78,8 @@ const ShareModal = ({ isOpen, onClose, note, onShareChange }) => {
           {note.shareEnabled && shareUrl && (
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 flex-1 input input-bordered input-sm glass-panel-subtle overflow-hidden">
-                <LinkIcon className="w-3.5 h-3.5 text-base-content/40 shrink-0" />
-                <span className="truncate text-xs text-base-content/60">{shareUrl}</span>
+                <LinkIcon className="w-3.5 h-3.5 text-ink-subtle shrink-0" />
+                <span className="truncate text-xs text-ink-muted">{shareUrl}</span>
               </div>
               <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle" aria-label="Close">
                 <XIcon className="w-4 h-4" />

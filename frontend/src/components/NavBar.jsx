@@ -21,12 +21,12 @@ const NavBar = () => {
 
   const desktopLinkClass = (path) =>
     `btn btn-ghost btn-sm gap-2 ${
-      isActive(path) ? "text-primary bg-primary/10" : "text-base-content/60 hover:text-base-content"
+      isActive(path) ? "text-primary bg-primary/10" : "text-ink-muted hover:text-base-content"
     }`;
 
   const mobileIconClass = (path) =>
     `btn btn-ghost btn-sm btn-circle ${
-      isActive(path) ? "text-primary bg-primary/15" : "text-base-content/50"
+      isActive(path) ? "text-primary bg-primary/15" : "text-ink-muted"
     }`;
 
   return (
@@ -71,7 +71,7 @@ const NavBar = () => {
                 className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-semibold shrink-0 transition-colors ${
                   isActive("/profile")
                     ? "bg-primary text-primary-content ring-2 ring-primary/30"
-                    : "bg-base-300 text-base-content/70 hover:bg-base-content/15"
+                    : "bg-base-300 text-ink hover:bg-base-content/15"
                 }`}
                 title="Profile & settings"
                 aria-label="Profile and settings"
@@ -145,7 +145,7 @@ const NavBar = () => {
             className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-semibold transition-colors ${
               isActive("/profile")
                 ? "bg-primary text-primary-content ring-2 ring-primary/30"
-                : "bg-base-300 text-base-content/70"
+                : "bg-base-300 text-ink"
             }`}
             title="Profile & settings"
             aria-label="Profile and settings"

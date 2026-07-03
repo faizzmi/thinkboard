@@ -86,7 +86,7 @@ const NoteDetailPage = () => {
         <div className="flex items-center justify-between mb-6">
           <Link
             to="/notes"
-            className="inline-flex items-center gap-2 text-sm text-base-content/45 hover:text-base-content transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-ink-subtle hover:text-base-content transition-colors"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Back to notes

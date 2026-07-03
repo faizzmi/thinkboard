@@ -5,7 +5,7 @@ const LogoutSection = ({ onLogoutClick }) => {
     <div className="flex items-center justify-between gap-4">
       <div>
         <h2 className="text-lg font-semibold text-base-content mb-1">Log out</h2>
-        <p className="text-sm text-base-content/50">Sign out of your ThinkBoard account on this device</p>
+        <p className="text-sm text-ink-muted">Sign out of your ThinkBoard account on this device</p>
       </div>
       <button
         onClick={onLogoutClick}

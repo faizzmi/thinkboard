@@ -54,19 +54,19 @@ const ShortcutsModal = ({ isOpen, onClose }) => {
                 <div className="p-6 space-y-6">
                     {grouped.map((group) => (
                         <section key={group.id}>
-                            <h3 className="text-xs font-semibold text-base-content/50 uppercase tracking-widest mb-3">
+                            <h3 className="text-xs font-semibold text-ink-muted uppercase tracking-widest mb-3">
                                 {group.label}
                             </h3>
                             <ul className="space-y-3">
                                 {group.items.map((shortcut) => (
                                     <li key={shortcut.id} className="flex items-center justify-between gap-4">
-                                        <span className="text-sm text-base-content/80">{shortcut.description}</span>
+                                        <span className="text-sm text-ink">{shortcut.description}</span>
                                         <div className="flex items-center gap-1 shrink-0">
                                             {formatKeys(shortcut.keys).map((key, i) => (
                                                 <span key={i} className="flex items-center gap-1">
                                                     <KeyBadge>{key}</KeyBadge>
                                                     {i < shortcut.keys.length - 1 && (
-                                                        <span className="text-base-content/25 text-xs">
+                                                        <span className="text-ink-faint text-xs">
                                                             {shortcut.combo ? "+" : "then"}
                                                         </span>
                                                     )}

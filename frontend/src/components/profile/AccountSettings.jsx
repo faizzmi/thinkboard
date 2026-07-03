@@ -46,11 +46,11 @@ const AccountSettings = () => {
     <div className="space-y-6 p-6">
       <div>
         <h2 className="text-lg font-semibold text-base-content mb-1">Account</h2>
-        <p className="text-sm text-base-content/50">Manage your personal information</p>
+        <p className="text-sm text-ink-muted">Manage your personal information</p>
       </div>
 
       <div className="form-control gap-2">
-        <label className="text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="text-xs font-semibold text-ink-muted uppercase tracking-widest">
           Name
         </label>
         <input
@@ -62,13 +62,13 @@ const AccountSettings = () => {
       </div>
 
       <div className="form-control gap-2">
-        <label className="text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+        <label className="text-xs font-semibold text-ink-muted uppercase tracking-widest">
           Email
         </label>
         <div className="flex items-center gap-2">
           <input
             type="email"
-            className="input input-bordered w-full bg-base-200/30 text-base-content/50"
+            className="input input-bordered w-full bg-base-200/30 text-ink-muted"
             value={user?.email || ""}
             disabled
           />

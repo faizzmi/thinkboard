@@ -14,7 +14,7 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
           {note.title}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs text-base-content/35 mb-6">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-ink-subtle mb-6">
           <span className="flex items-center gap-1.5">
             <CalendarIcon className="w-3.5 h-3.5" />
             Created {formatDate(new Date(note.createdAt))}
@@ -29,7 +29,7 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
 
         <div className="border-t border-base-content/6 mb-6" />
 
-        <p className="text-base-content/80 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+        <p className="text-ink leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
           {note.content}
         </p>
       </div>
@@ -37,14 +37,14 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
       {(note.deadline || note.location || note.checklist?.length > 0) && (
         <div className={`border-t border-base-content/6 pt-5 space-y-4 ${compact ? "px-5" : "px-6 sm:px-8"}`}>
           {note.deadline && (
-            <div className={`flex items-center gap-2 text-sm ${isOverdue(note.deadline) ? "text-error" : "text-base-content/60"}`}>
+            <div className={`flex items-center gap-2 text-sm ${isOverdue(note.deadline) ? "text-error" : "text-ink-muted"}`}>
               <CalendarClockIcon className="w-4 h-4" />
               {isOverdue(note.deadline) ? "Overdue: " : "Due "}
               {new Date(note.deadline).toLocaleString()}
             </div>
           )}
           {note.location && (
-            <div className="flex items-center gap-2 text-sm text-base-content/60">
+            <div className="flex items-center gap-2 text-sm text-ink-muted">
               <MapPinIcon className="w-4 h-4" />
               {note.location}
             </div>
@@ -54,7 +54,7 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
               {note.checklist.map((item, i) => (
                 <label key={item._id || i} className="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="checkbox" className="checkbox checkbox-xs" checked={item.done} readOnly />
-                  <span className={item.done ? "line-through text-base-content/40" : "text-base-content/80"}>
+                  <span className={item.done ? "line-through text-ink-subtle" : "text-ink"}>
                     {item.text}
                   </span>
                 </label>
@@ -67,13 +67,13 @@ const NoteContent = ({ note, onDeleteClick, compact = false, readOnly = false })
       {!readOnly && (
         <div className={compact ? "px-5 pb-5 pt-2" : "px-6 sm:px-8 pb-6 sm:pb-8 pt-2"}>
           <div className="border-t border-base-content/6 pt-5 flex items-center justify-between gap-3">
-            <span className="text-xs text-base-content/25 font-mono">
+            <span className="text-xs text-ink-faint font-mono">
               {note.content.length} chars
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={onDeleteClick}
-                className="btn btn-ghost btn-sm gap-2 text-base-content/40 hover:text-error hover:bg-error/10"
+                className="btn btn-ghost btn-sm gap-2 text-ink-subtle hover:text-error hover:bg-error/10"
               >
                 <Trash2Icon className="w-4 h-4" />
                 <span className="hidden sm:inline">Delete</span>

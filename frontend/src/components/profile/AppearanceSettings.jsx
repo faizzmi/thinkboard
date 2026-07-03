@@ -8,7 +8,7 @@ const AppearanceSettings = () => {
     <div className="space-y-6 p-6">
       <div>
         <h2 className="text-lg font-semibold text-base-content mb-1">Appearance</h2>
-        <p className="text-sm text-base-content/50">Choose how ThinkBoard looks</p>
+        <p className="text-sm text-ink-muted">Choose how ThinkBoard looks</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

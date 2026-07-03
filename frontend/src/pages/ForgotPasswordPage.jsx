@@ -44,14 +44,14 @@ const ForgotPasswordPage = () => {
         {sent ? (
           <div className="text-center space-y-3 py-4">
             <MailIcon className="w-10 h-10 text-primary mx-auto" />
-            <p className="text-sm text-base-content/70">
+            <p className="text-sm text-ink">
               A reset link has been sent. Check your inbox.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control gap-2">
-              <label className="text-xs font-semibold text-base-content/50 uppercase tracking-widest">
+              <label className="text-xs font-semibold text-ink-muted uppercase tracking-widest">
                 Email
               </label>
               <input
@@ -68,7 +68,7 @@ const ForgotPasswordPage = () => {
           </form>
         )}
 
-        <Link to="/login" className="flex items-center justify-center gap-2 text-sm text-base-content/50 hover:text-base-content mt-6">
+        <Link to="/login" className="flex items-center justify-center gap-2 text-sm text-ink-muted hover:text-base-content mt-6">
           <ArrowLeftIcon className="w-4 h-4" />
           Back to login
         </Link>

@@ -58,20 +58,20 @@ const DashboardPage = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="glass-panel p-5">
-            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Total notes</p>
+            <p className="text-xs text-ink-subtle uppercase tracking-widest mb-1">Total notes</p>
             <p className="text-page-title text-base-content">{data.totalNotes}</p>
           </div>
           <div className="glass-panel p-5">
-            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Overdue</p>
+            <p className="text-xs text-ink-subtle uppercase tracking-widest mb-1">Overdue</p>
             <p className="text-2xl font-bold text-error">{data.overdue.length}</p>
           </div>
           <div className="glass-panel p-5">
-            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-2">Checklist progress</p>
+            <p className="text-xs text-ink-subtle uppercase tracking-widest mb-2">Checklist progress</p>
             <div className="flex items-center gap-3">
               <div className="radial-progress text-primary text-xs" style={{ "--value": data.checklistProgress.percent, "--size": "2.5rem" }}>
                 {data.checklistProgress.percent}%
               </div>
-              <span className="text-xs text-base-content/50">
+              <span className="text-xs text-ink-muted">
                 {data.checklistProgress.done}/{data.checklistProgress.total} done
               </span>
             </div>
@@ -111,7 +111,7 @@ const DashboardPage = () => {
                         to={`/note/${note._id}`}
                         className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg hover:bg-error/5 transition-colors"
                       >
-                        <span className="text-sm text-base-content/80 truncate">{note.title}</span>
+                        <span className="text-sm text-ink truncate">{note.title}</span>
                         <span className="flex items-center gap-2 shrink-0">
                           <span className={`badge badge-${getPriorityColor(note.priority)} badge-xs`}>{note.priority}</span>
                           <span className="text-xs text-error font-mono">{getDaysUntil(note.deadline)}</span>
@@ -129,7 +129,7 @@ const DashboardPage = () => {
                 Upcoming (next 7 days)
               </h2>
               {filteredByDate(data.upcoming).length === 0 ? (
-                <p className="text-sm text-base-content/40 px-3 py-2">Nothing due soon</p>
+                <p className="text-sm text-ink-subtle px-3 py-2">Nothing due soon</p>
               ) : (
                 <ul className="space-y-2">
                   {filteredByDate(data.upcoming).map((note) => (
@@ -138,10 +138,10 @@ const DashboardPage = () => {
                         to={`/note/${note._id}`}
                         className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg hover:bg-base-200/50 transition-colors"
                       >
-                        <span className="text-sm text-base-content/80 truncate">{note.title}</span>
+                        <span className="text-sm text-ink truncate">{note.title}</span>
                         <span className="flex items-center gap-2 shrink-0">
                           <span className={`badge badge-${getPriorityColor(note.priority)} badge-xs`}>{note.priority}</span>
-                          <span className="text-xs text-base-content/40 font-mono">{getDaysUntil(note.deadline)}</span>
+                          <span className="text-xs text-ink-subtle font-mono">{getDaysUntil(note.deadline)}</span>
                         </span>
                       </Link>
                     </li>
@@ -159,7 +159,7 @@ const DashboardPage = () => {
                 {Object.entries(data.typeCounts).map(([type, count]) => (
                   <div key={type} className="flex-1 glass-panel-subtle p-3 text-center">
                     <p className="text-lg font-bold text-base-content">{count}</p>
-                    <p className="text-xs text-base-content/40 capitalize">{type}</p>
+                    <p className="text-xs text-ink-subtle capitalize">{type}</p>
                   </div>
                 ))}
               </div>

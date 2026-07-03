@@ -29,12 +29,12 @@ const NoteCard = ({ note, onDelete }) => {
         <div className="mt-1 w-2 h-2 rounded-full bg-primary/40 flex-shrink-0 group-hover:bg-primary transition-colors duration-200" />
       </div>
 
-      <p className="text-sm text-base-content/55 line-clamp-3 leading-relaxed flex-1 mb-4">
+      <p className="text-sm text-ink-muted line-clamp-3 leading-relaxed flex-1 mb-4">
         {note.content}
       </p>
 
       <div className="flex items-center justify-between mt-auto pt-3 border-t border-base-content/6">
-        <div className="flex items-center gap-1.5 text-xs text-base-content/35">
+        <div className="flex items-center gap-1.5 text-xs text-ink-subtle">
           <CalendarIcon className="w-3 h-3" />
           <span>{formatDate(new Date(note.createdAt))}</span>
         </div>
@@ -42,8 +42,8 @@ const NoteCard = ({ note, onDelete }) => {
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button
             onClick={handleSplitView}
-            className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-primary hover:bg-primary/10 hidden lg:inline-flex"
-            aria-title="Open in split view"
+            className="btn btn-ghost btn-xs gap-1 text-ink-muted hover:text-primary hover:bg-primary/10 hidden lg:inline-flex"
+            title="Open in split view"
           >
             <Columns2Icon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Split</span>
@@ -51,16 +51,16 @@ const NoteCard = ({ note, onDelete }) => {
           <Link
             to={`/note/edit/${note._id}`}
             onClick={(e) => e.stopPropagation()}
-            className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-info hover:bg-info/10"
-            aria-title="Edit note"
+            className="btn btn-ghost btn-xs gap-1 text-ink-muted hover:text-info hover:bg-info/10"
+            title="Edit note"
           >
             <PenSquareIcon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Edit</span>
           </Link>
           <button
             onClick={handleDelete}
-            className="btn btn-ghost btn-xs gap-1 text-base-content/50 hover:text-error hover:bg-error/10"
-            aria-title="Delete note"
+            className="btn btn-ghost btn-xs gap-1 text-ink-muted hover:text-error hover:bg-error/10"
+            title="Delete note"
           >
             <Trash2Icon className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Delete</span>

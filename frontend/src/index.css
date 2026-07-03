@@ -67,6 +67,11 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  
+  .text-ink        { color: hsl(var(--bc) / 0.92); }  /* headings, primary text */
+  .text-ink-muted  { color: hsl(var(--bc) / 0.72); }  /* body/secondary text */
+  .text-ink-subtle { color: hsl(var(--bc) / 0.58); }  /* captions, meta info */
+  .text-ink-faint  { color: hsl(var(--bc) / 0.46); }  /* timestamps, char counts — lowest tier allowed */
 }
 
 .landing-page {

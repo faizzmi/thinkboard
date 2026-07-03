@@ -14,7 +14,7 @@ const RateLimitedUI = ({ onRetry }) => {
 
           <div className="space-y-2">
             <h2 className="text-xl font-bold">Slow down a bit</h2>
-            <p className="text-sm text-base-content/60 leading-relaxed">
+            <p className="text-sm text-ink-muted leading-relaxed">
               You've hit the rate limit. Give it a moment and try again.
             </p>
           </div>
