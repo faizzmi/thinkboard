@@ -5,7 +5,7 @@ import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
 import ConfirmModal from "../components/ConfirmModal";
 import toast from "react-hot-toast";
-import { PlusIcon, StickyNoteIcon, SearchIcon, Loader2Icon } from "lucide-react";
+import { PlusIcon, StickyNoteIcon, SearchIcon, Loader2Icon, Share2Icon } from "lucide-react";
 import api from "../lib/axios";
 import { useAuth } from "../context/AuthContext";
 
@@ -30,6 +30,21 @@ const EmptyState = () => (
   </div>
 );
 
+const EmptySharedState = () => (
+  <div className="flex flex-col items-center justify-center py-24 px-4 animate-fade-in">
+    <div className="relative mb-6">
+      <div className="absolute inset-0 bg-secondary/10 rounded-full blur-2xl" />
+      <div className="relative bg-base-100/60 backdrop-blur-sm p-6 rounded-2xl ring-1 ring-secondary/15">
+        <Share2Icon className="w-12 h-12 text-secondary/50" strokeWidth={1.5} />
+      </div>
+    </div>
+    <h3 className="text-lg font-semibold text-base-content mb-2">No shared notes</h3>
+    <p className="text-sm text-ink-muted text-center max-w-xs">
+      Notes you enable sharing on will show up here.
+    </p>
+  </div>
+);
+
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -39,20 +54,24 @@ const HomePage = () => {
   const [isLoading, setLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [search, setSearch] = useState("");
-  const [confirmDelete, setConfirmDelete] = useState(null); // holds note id
+  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [activeTab, setActiveTab] = useState("all"); // "all" | "shared"
+  const [counts, setCounts] = useState({ all: 0, shared: 0 });
   const { user } = useAuth();
 
-  const fetchNotes = useCallback(async (pageToFetch, { append = false } = {}) => {
+  const fetchNotes = useCallback(async (pageToFetch, { append = false, tab = activeTab } = {}) => {
     append ? setIsLoadingMore(true) : setLoading(true);
     try {
-      const res = await api.get("/api/notes/", {
-        params: { page: pageToFetch, limit: PAGE_SIZE },
-      });
+      const params = { page: pageToFetch, limit: PAGE_SIZE };
+      if (tab === "shared") params.shared = "true";
+
+      const res = await api.get("/api/notes/", { params });
       const { notes: fetched, hasMore: more, totalNotes: total } = res.data;
       setNotes((prev) => (append ? [...prev, ...fetched] : fetched));
       setHasMore(more);
       setTotalNotes(total);
       setPage(pageToFetch);
+      setCounts((prev) => ({ ...prev, [tab]: total }));
       setIsRateLimited(false);
     } catch (error) {
       console.error("Error fetching notes", error);
@@ -65,15 +84,34 @@ const HomePage = () => {
       setLoading(false);
       setIsLoadingMore(false);
     }
+  }, [activeTab]);
+
+  // fetch the count for the inactive tab quietly, just for the badge number
+  const fetchOtherCount = useCallback(async (tab) => {
+    try {
+      const params = { page: 1, limit: 1 };
+      if (tab === "shared") params.shared = "true";
+      const res = await api.get("/api/notes/", { params });
+      setCounts((prev) => ({ ...prev, [tab]: res.data.totalNotes }));
+    } catch {
+      // silent fail, badge just won't update
+    }
   }, []);
 
   useEffect(() => {
-    fetchNotes(1);
-  }, [fetchNotes]);
+    fetchNotes(1, { tab: activeTab });
+    fetchOtherCount(activeTab === "all" ? "shared" : "all");
+  }, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleTabChange = (tab) => {
+    if (tab === activeTab) return;
+    setActiveTab(tab);
+    setSearch("");
+  };
 
   const handleLoadMore = () => {
     if (isLoadingMore || !hasMore) return;
-    fetchNotes(page + 1, { append: true });
+    fetchNotes(page + 1, { append: true, tab: activeTab });
   };
 
   const handleDeleteRequest = (id) => {
@@ -83,21 +121,22 @@ const HomePage = () => {
   const handleDeleteConfirm = () => {
     const id = confirmDelete;
     setConfirmDelete(null);
-  
+
     const deletedNote = notes.find((n) => n._id === id);
     if (!deletedNote) return;
-  
-    // Optimistic: remove from the list immediately, don't wait on the network
+
     setNotes((prev) => prev.filter((n) => n._id !== id));
     setTotalNotes((prev) => Math.max(prev - 1, 0));
-  
+    setCounts((prev) => ({ ...prev, [activeTab]: Math.max(prev[activeTab] - 1, 0) }));
+
     let undone = false;
     const undo = () => {
       undone = true;
       setNotes((prev) => [deletedNote, ...prev]);
       setTotalNotes((prev) => prev + 1);
+      setCounts((prev) => ({ ...prev, [activeTab]: prev[activeTab] + 1 }));
     };
-  
+
     toast((t) => (
       <span className="flex items-center gap-3">
         Note deleted
@@ -112,7 +151,7 @@ const HomePage = () => {
         </button>
       </span>
     ), { duration: 4000 });
-  
+
     setTimeout(async () => {
       if (undone) return;
       try {
@@ -146,47 +185,70 @@ const HomePage = () => {
       />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        
-      {!isRateLimited && !isLoading && totalNotes > 0 && (
-        <div className="mb-8 animate-slide-up">
-          {user && (
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-base-content">
-                {user.name}'s Notes
-                <span className="ml-2 text-sm font-normal text-ink-subtle font-mono">
-                  ({totalNotes})
-                </span>
-              </h2>
-              <p className="text-sm text-ink-subtle mt-0.5">
-                {totalNotes === 1 ? "1 note saved" : `${totalNotes} notes saved`}
-              </p>
-            </div>
 
-            <div className="relative w-full sm:w-64">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint" />
-              <input
-                type="text"
-                placeholder="Search notes..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input input-bordered input-sm w-full pl-9 glass-panel-subtle focus:border-primary/50 focus:outline-none"
-              />
-            </div>
+        {!isRateLimited && !isLoading && totalNotes > 0 && (
+          <div className="mb-4 animate-slide-up">
+            {user && (
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-base-content">
+                    {activeTab === "shared" ? "Shared Notes" : `${user.name}'s Notes`}
+                  </h2>
+                  <p className="text-sm text-ink-subtle mt-0.5">
+                    {activeTab === "shared" ? "Anyone with the link can view these" : "Keep capturing your thoughts"}
+                  </p>
+                </div>
 
-            <Link
-              to="/create"
-              className="btn btn-primary btn-sm gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 w-full sm:w-auto"
-            >
-              <PlusIcon className="w-4 h-4" />
-              New Note
-            </Link>
+                <div className="relative w-full sm:w-64">
+                  <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint" />
+                  <input
+                    type="text"
+                    placeholder="Search notes..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="input input-bordered input-sm w-full pl-9 glass-panel-subtle focus:border-primary/50 focus:outline-none"
+                  />
+                </div>
+
+                <Link
+                  to="/create"
+                  className="btn btn-primary btn-sm gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 w-full sm:w-auto"
+                >
+                  <PlusIcon className="w-4 h-4" />
+                  New Note
+                </Link>
+              </div>
+            )}
           </div>
-          )}
-        </div>
-      )}
+        )}
 
-        {isRateLimited && <RateLimitedUI onRetry={() => fetchNotes(1)} />}
+        {user && (
+          <div className="mb-6 flex items-center gap-1 border-b border-base-content/10">
+            <button
+              onClick={() => handleTabChange("all")}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
+                activeTab === "all"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-ink-muted hover:text-base-content"
+              }`}
+            >
+              All Notes ({counts.all})
+            </button>
+            <button
+              onClick={() => handleTabChange("shared")}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px flex items-center gap-1.5 ${
+                activeTab === "shared"
+                  ? "border-secondary text-secondary"
+                  : "border-transparent text-ink-muted hover:text-base-content"
+              }`}
+            >
+              <Share2Icon className="w-3.5 h-3.5" />
+              Shared ({counts.shared})
+            </button>
+          </div>
+        )}
+
+        {isRateLimited && <RateLimitedUI onRetry={() => fetchNotes(1, { tab: activeTab })} />}
 
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -207,7 +269,9 @@ const HomePage = () => {
           </div>
         )}
 
-        {!isLoading && !isRateLimited && totalNotes === 0 && <EmptyState />}
+        {!isLoading && !isRateLimited && totalNotes === 0 && (
+          activeTab === "shared" ? <EmptySharedState /> : <EmptyState />
+        )}
 
         {!isLoading && !isRateLimited && totalNotes > 0 && filtered.length === 0 && (
           <div className="text-center py-16 animate-fade-in">

@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   BookOpenIcon,
-  SettingsIcon,
+  SearchIcon,
   KeyboardIcon,
   LayoutDashboardIcon,
   StickyNoteIcon,
@@ -10,12 +10,15 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useShortcutsModal } from "../context/ShortcutsModalContext";
 import { getInitials } from "../lib/utils";
+import SearchModal from "./SearchModal";
+import { useState } from "react";
 
 const NavBar = () => {
   const { user } = useAuth();
   const { open } = useShortcutsModal();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
 
@@ -66,6 +69,14 @@ const NavBar = () => {
               >
                 <KeyboardIcon className="w-4 h-4" />
               </button>
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="btn btn-secondary btn-sm btn-circle shadow-md shadow-secondary/30"
+                title="Search"
+                aria-label="Search"
+              >
+                <SearchIcon className="w-4 h-4" />
+              </button>
               <Link
                 to="/profile"
                 className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-semibold shrink-0 transition-colors ${
@@ -106,55 +117,66 @@ const NavBar = () => {
     </div>
     </header>
 
-    {/* Mobile: floating bottom pill nav — primary mobile navigation */}
+    {/* Mobile: floating bottom pill nav — primarzy mobile navigation */}
     {user && (
-      <nav
-        className="fixed bottom-4 inset-x-0 z-50 flex justify-center px-4 sm:hidden"
-        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-        aria-label="Primary"
-      >
-        <div className="flex items-center gap-1 px-2 py-2 rounded-full glass-panel-strong glass-highlight shadow-glass-lg">
+      <>
+        <nav
+          className="fixed bottom-4 inset-x-0 z-50 flex items-center justify-center gap-3 px-4 sm:hidden"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          aria-label="Primary"
+        >
+          <div className="flex items-center gap-1 px-2 py-2 rounded-full glass-panel-strong glass-highlight shadow-glass-lg">
+            <button
+              onClick={() => navigate("/")}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full transition-colors ${
+                isActive("/") ? "text-primary bg-primary/10" : "text-ink-muted"
+              }`}
+            >
+              <LayoutDashboardIcon className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => navigate("/create")}
+              className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full text-ink-muted bg-primary"
+            >
+              <PlusIcon className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => navigate("/notes")}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full transition-colors ${
+                isActive("/notes") ? "text-primary bg-primary/10" : "text-ink-muted"
+              }`}
+            >
+              <StickyNoteIcon className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => navigate("/profile")}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full transition-colors ${
+                isActive("/profile") ? "text-primary bg-primary/10" : "text-ink-muted"
+              }`}
+            >
+              <div className={`flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-semibold ${
+                isActive("/profile") ? "bg-primary text-primary-content" : "bg-base-300 text-ink"
+              }`}>
+                {getInitials(user.name)}
+              </div>
+            </button>
+          </div>
+
+          {/* Separate floating circular search button, outside the pill */}
           <button
-            onClick={() => navigate("/")}
-            className={mobileIconClass("/")}
-            title="Dashboard"
-            aria-label="Dashboard"
-            aria-current={isActive("/") ? "page" : undefined}
+            onClick={() => setIsSearchOpen(true)}
+            className="btn btn-secondary btn-circle shadow-md shadow-secondary/30 shrink-0"
+            aria-label="Search"
           >
-            <LayoutDashboardIcon className="w-[18px] h-[18px]" />
+            <SearchIcon className="w-5 h-5" />
           </button>
-          <button
-            onClick={() => navigate("/notes")}
-            className={mobileIconClass("/notes")}
-            title="Notes"
-            aria-label="Notes"
-            aria-current={isActive("/notes") ? "page" : undefined}
-          >
-            <StickyNoteIcon className="w-[18px] h-[18px]" />
-          </button>
-          <button
-            onClick={() => navigate("/create")}
-            className="btn btn-primary btn-sm btn-circle shadow-md shadow-primary/30 mx-1"
-            title="New note (Shift + N)"
-            aria-label="New note"
-          >
-            <PlusIcon className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => navigate("/profile")}
-            className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-semibold transition-colors ${
-              isActive("/profile")
-                ? "bg-primary text-primary-content ring-2 ring-primary/30"
-                : "bg-base-300 text-ink"
-            }`}
-            title="Profile & settings"
-            aria-label="Profile and settings"
-            aria-current={isActive("/profile") ? "page" : undefined}
-          >
-            {getInitials(user.name)}
-          </button>
-        </div>
-      </nav>
+        </nav>
+
+        <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      </>
     )}
     </>
   );

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { AlertTriangleIcon } from "lucide-react";
 import { logClientError } from "../lib/logger";
+import * as Sentry from "@sentry/react";
 
 class ErrorBoundary extends Component {
     constructor(props) {

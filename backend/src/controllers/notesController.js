@@ -14,13 +14,26 @@ export async function getAllNotes(req, res) {
             MAX_PAGE_SIZE
         );
         const skip = (page - 1) * limit;
+        const search = req.query.search?.trim();
+        const sharedOnly = req.query.shared === "true";
+
+        const filter = { user: req.user._id };
+        if (search) {
+            filter.$or = [
+                { title: { $regex: search, $options: "i" } },
+                { content: { $regex: search, $options: "i" } },
+            ];
+        }
+        if (sharedOnly) {
+            filter.shareEnabled = true;
+        }
 
         const [notes, totalNotes] = await Promise.all([
-            Note.find({ user: req.user._id })
+            Note.find(filter)
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit),
-            Note.countDocuments({ user: req.user._id }),
+            Note.countDocuments(filter),
         ]);
 
         res.status(200).json({

@@ -81,8 +81,8 @@ const ShareModal = ({ isOpen, onClose, note, onShareChange }) => {
                 <LinkIcon className="w-3.5 h-3.5 text-ink-subtle shrink-0" />
                 <span className="truncate text-xs text-ink-muted">{shareUrl}</span>
               </div>
-              <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle" aria-label="Close">
-                <XIcon className="w-4 h-4" />
+              <button onClick={handleCopy} className="btn btn-ghost btn-sm btn-circle" aria-label="Copy link">
+                <CopyIcon className="w-4 h-4" />
               </button>
             </div>
           )}

@@ -28,20 +28,20 @@ const ProfilePage = () => {
 
         <h1 className="text-page-title text-base-content mb-6">Settings</h1>
 
-        <div className="space-y-6">
+        <div className="space-y-6" id="settings-sections">
           <section className="glass-panel glass-highlight">
             <AccountSettings />
           </section>
 
-          <section className="glass-panel glass-highlight">
+          <section className="glass-panel glass-highlight" id="appearance-settings">
             <AppearanceSettings />
           </section>
 
-          <section className="glass-panel glass-highlight">
+          <section className="glass-panel glass-highlight" id="security-settings">
             <SecuritySettings />
           </section>
 
-          <section className="rounded-2xl border border-error/15 bg-error/5 backdrop-blur-sm p-6 sm:p-8">
+          <section className="rounded-2xl border border-error/15 bg-error/5 backdrop-blur-sm p-6 sm:p-8" id="logout-section">
             <LogoutSection onLogoutClick={() => setShowLogoutConfirm(true)} />
           </section>
         </div>
