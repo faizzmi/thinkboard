@@ -29,11 +29,15 @@ Sentry.init({
     tracesSampleRate: 1.0,
 });
 
-if (process.env.NODE_ENV !== "production"){
-    app.use(cors({
-        origin: "http://localhost:5173"
-    })); // cors
-}
+const allowedOrigins = process.env.NODE_ENV === "production"
+    ? [process.env.FRONTEND_URL]
+    : ["http://localhost:5173"];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+}));
+
 app.use(express.json()); // will parse json body
 app.use(ipRateLimiter); // rate limiter
 app.use(morgan(
