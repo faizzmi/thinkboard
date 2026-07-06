@@ -1,20 +1,13 @@
 import request from "supertest";
 import { expect } from "chai";
-import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import express from "express";
 import notesRoutes from "../src/routes/notesRoutes.js";
 import authRoutes from "../src/routes/authRoutes.js";
 
 let app;
-let mongod;
 let token;
 
 before(async () => {
-  process.env.JWT_SECRET = process.env.JWT_SECRET || "test-secret";
-  mongod = await MongoMemoryServer.create();
-  await mongoose.connect(mongod.getUri());
-
   app = express();
   app.use(express.json());
   app.use("/api/auth", authRoutes);
@@ -24,11 +17,6 @@ before(async () => {
     .post("/api/auth/signup")
     .send({ name: "Test User", email: "test@example.com", password: "password123" });
   token = signupRes.body.token;
-});
-
-after(async () => {
-  await mongoose.disconnect();
-  await mongod.stop();
 });
 
 describe("Notes API", () => {
@@ -45,7 +33,7 @@ describe("Notes API", () => {
       .get("/api/notes/")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).to.equal(200);
-    expect(res.body).to.be.an("array");
+    expect(res.body.notes).to.be.an("array");   // <-- this line is the actual assertion fix
   });
 
   it("get note by bad id return 404 or 500", async () => {

@@ -60,7 +60,11 @@ const HomePage = () => {
   const { user } = useAuth();
 
   const fetchNotes = useCallback(async (pageToFetch, { append = false, tab = activeTab } = {}) => {
-    append ? setIsLoadingMore(true) : setLoading(true);
+    if (append) {
+      setIsLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
     try {
       const params = { page: pageToFetch, limit: PAGE_SIZE };
       if (tab === "shared") params.shared = "true";
