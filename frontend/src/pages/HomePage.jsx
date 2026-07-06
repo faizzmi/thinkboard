@@ -45,6 +45,17 @@ const EmptySharedState = () => (
   </div>
 );
 
+function useDebouncedValue(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -93,13 +104,11 @@ const HomePage = () => {
     }
   }, [activeTab]);
   
+  const debouncedSearch = useDebouncedValue(search.trim(), 400);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchNotes(1, { tab: activeTab, search: search.trim() });
-    }, search ? 350 : 0);
-    return () => clearTimeout(timer);
-  }, [search, activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
-  
+    fetchNotes(1, { tab: activeTab, search: debouncedSearch });
+  }, [debouncedSearch, activeTab]); 
 
   // fetch the count for the inactive tab quietly, just for the badge number
   const fetchOtherCount = useCallback(async (tab) => {
