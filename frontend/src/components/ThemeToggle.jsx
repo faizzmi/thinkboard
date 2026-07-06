@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { PaletteIcon, CheckIcon } from "lucide-react";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useTheme } from "../context/ThemeContext";
 
 const ThemeToggle = () => {
     const { theme, setTheme, themes } = useTheme();

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 import CreatePage from "./pages/CreatePage";
@@ -12,15 +12,19 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ShortcutsModal from "./components/ShortcutsModal";
 import { Toaster } from "react-hot-toast";
 import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
-import { useShortcutsModal } from "../context/useShortcutsModal";
+import { useShortcutsModal } from "./context/ShortcutsModalContext.jsx";
 import SplitViewPage from "./pages/SplitViewPage";
 import SharedNotePage from "./pages/SharedNotePage";
 import DashboardPage from "./pages/DashboardPage";
 import LandingPage from "./pages/LandingPage";
 import NotFoundRedirect from "./components/NotFoundRedirect";
+import SessionRevokedModal from "./components/SessionRevokedModal";
+import { useEffect, useState } from "react";
 
 const App = () => {
   const { isOpen, open, close } = useShortcutsModal();
+  const [sessionRevoked, setSessionRevoked] = useState(false);
+  const navigate = useNavigate();
 
   useGlobalShortcuts({
     onOpenPalette: () => {
@@ -29,6 +33,27 @@ const App = () => {
     },
     onOpenShortcutsRef: open,
   });
+
+
+  useEffect(() => {
+    const handleRevoked = () => setSessionRevoked(true);
+    window.addEventListener("session-revoked", handleRevoked);
+    return () => window.removeEventListener("session-revoked", handleRevoked);
+  }, []);
+
+  const handleAcknowledge = () => {
+    setSessionRevoked(false);
+    localStorage.removeItem("token");
+    navigate("/login");
+    window.location.reload(); // clears AuthContext state cleanly
+  };
+
+  const handleSecureAccount = () => {
+    setSessionRevoked(false);
+    localStorage.removeItem("token");
+    navigate("/forgot-password");
+    window.location.reload();
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-base-200">
@@ -56,6 +81,11 @@ const App = () => {
       </Routes>
 
       <ShortcutsModal isOpen={isOpen} onClose={close} />
+      <SessionRevokedModal
+        isOpen={sessionRevoked}
+        onConfirm={handleAcknowledge}
+        onSecureAccount={handleSecureAccount}
+      />
 
       <Toaster
         position="bottom-right"

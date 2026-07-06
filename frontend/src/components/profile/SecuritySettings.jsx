@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { LockIcon, KeyRoundIcon } from "lucide-react";
 import api from "../../lib/axios";
@@ -8,6 +9,7 @@ const SecuritySettings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +30,10 @@ const SecuritySettings = () => {
     setSubmitting(true);
     try {
       await api.put("/api/auth/change-password", { currentPassword, newPassword });
-      toast.success("Password changed successfully");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
+      toast.success("Password changed. Please log in again.");
+      localStorage.removeItem("token");
+      navigate("/login");
+      window.location.reload();
     } catch (error) {
       if (error.response?.status === 429) {
         toast.error("Too many attempts. Please wait before trying again.");

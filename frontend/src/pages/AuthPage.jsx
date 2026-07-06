@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { LogInIcon, UserPlusIcon, MailIcon, LockIcon, UserIcon } from "lucide-react";
+import { LogInIcon, UserPlusIcon, MailIcon, LockIcon, UserIcon, BookOpenIcon } from "lucide-react";
 import api from "../lib/axios";
 import { useAuth } from "../context/AuthContext";
 import CryptoJS from "crypto-js";
@@ -80,6 +80,15 @@ const AuthPage = () => {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm glass-panel glass-highlight shadow-base-content/5 p-6 sm:p-8 animate-slide-up">
         {/* Tabs */}
+        <div className="flex flex-col items-center text-center mb-6">
+          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/15 ring-1 ring-primary/20 mb-3">
+            <BookOpenIcon className="w-6 h-6 text-primary" strokeWidth={2} />
+          </div>
+          <h1 className="text-xl font-bold font-mono tracking-tight text-base-content">
+            Welcome to Think<span className="text-primary">Board</span>
+          </h1>
+          <p className="text-sm text-ink-muted mt-1">Your notes, organized.</p>
+        </div>
         <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-base-200/60 mb-6">
           <button
             type="button"

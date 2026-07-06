@@ -8,8 +8,8 @@ import {
     sendPasswordResetEmail,
 } from "../services/emailService.js";
 
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+const generateToken = (id, sessionId) => {
+    return jwt.sign({ id, sessionId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24h
@@ -33,13 +33,15 @@ export async function signup(req, res) {
 
         const user = await User.create({ name, email, password });
 
+        const sessionId = generateRawToken();
+        user.activeSessionId = sessionId;
+
         // generate + store verification token
         const rawToken = generateRawToken();
         user.verificationTokenHash = hashToken(rawToken);
         user.verificationTokenExpires = new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS);
         await user.save();
 
-        // fire-and-forget emails, don't block signup response
         sendWelcomeEmail(user).catch((err) => logger.error("Welcome email failed", { err: err.message }));
         sendVerificationEmail(user, rawToken).catch((err) => logger.error("Verification email failed", { err: err.message }));
 
@@ -49,7 +51,7 @@ export async function signup(req, res) {
             email: user.email,
             theme: user.theme,
             emailVerified: user.emailVerified,
-            token: generateToken(user._id),
+            token: generateToken(user._id, sessionId),
         });
     } catch (error) {
         logger.error("Error in signup", { error: error.message, stack: error.stack });
@@ -75,13 +77,17 @@ export async function login(req, res) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
+        const sessionId = generateRawToken();
+        user.activeSessionId = sessionId;
+        await user.save();
+
         res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email,
             theme: user.theme,
             emailVerified: user.emailVerified,
-            token: generateToken(user._id),
+            token: generateToken(user._id, sessionId),
         });
     } catch (error) {
         logger.error("Error in login", { error: error.message, stack: error.stack });
@@ -90,7 +96,13 @@ export async function login(req, res) {
 }
 
 export async function getMe(req, res) {
-    res.status(200).json(req.user);
+    res.status(200).json({
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        theme: req.user.theme,
+        emailVerified: req.user.emailVerified,
+    });
 }
 
 export async function updateTheme(req, res) {
@@ -210,6 +222,7 @@ export async function resetPassword(req, res) {
         user.password = newPassword; // pre-save hook hashes it
         user.resetTokenHash = null;
         user.resetTokenExpires = null;
+        user.activeSessionId = null; // kill any session tied to the old password
         await user.save();
 
         res.status(200).json({ message: "Password reset successfully" });
@@ -274,11 +287,23 @@ export async function changePassword(req, res) {
         }
 
         req.user.password = newPassword; // pre-save hook hashes it
+        req.user.activeSessionId = null; // force re-login everywhere, including this tab
         await req.user.save();
 
-        res.status(200).json({ message: "Password changed successfully" });
+        res.status(200).json({ message: "Password changed successfully. Please log in again." });
     } catch (error) {
         logger.error("Error in changePassword", { error: error.message, stack: error.stack });
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+export async function logout(req, res) {
+    try {
+        req.user.activeSessionId = null;
+        await req.user.save();
+        res.status(200).json({ message: "Logged out" });
+    } catch (error) {
+        logger.error("Error in logout", { error: error.message, stack: error.stack });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

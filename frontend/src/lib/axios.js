@@ -17,4 +17,24 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401 && localStorage.getItem("token")) {
+            const code = error.response?.data?.code;
+
+            if (code === "SESSION_REVOKED") {
+                // don't redirect immediately, let the app show a modal first
+                window.dispatchEvent(new CustomEvent("session-revoked"));
+            } else {
+                localStorage.removeItem("token");
+                if (!window.location.pathname.startsWith("/login")) {
+                    window.location.href = "/login";
+                }
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;

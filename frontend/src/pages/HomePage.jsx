@@ -59,7 +59,7 @@ const HomePage = () => {
   const [counts, setCounts] = useState({ all: 0, shared: 0 });
   const { user } = useAuth();
 
-  const fetchNotes = useCallback(async (pageToFetch, { append = false, tab = activeTab } = {}) => {
+  const fetchNotes = useCallback(async (pageToFetch, { append = false, tab = activeTab, search: searchTerm = "" } = {}) => {
     if (append) {
       setIsLoadingMore(true);
     } else {
@@ -68,14 +68,17 @@ const HomePage = () => {
     try {
       const params = { page: pageToFetch, limit: PAGE_SIZE };
       if (tab === "shared") params.shared = "true";
-
+      if (searchTerm) params.search = searchTerm;
+  
       const res = await api.get("/api/notes/", { params });
       const { notes: fetched, hasMore: more, totalNotes: total } = res.data;
       setNotes((prev) => (append ? [...prev, ...fetched] : fetched));
       setHasMore(more);
       setTotalNotes(total);
       setPage(pageToFetch);
-      setCounts((prev) => ({ ...prev, [tab]: total }));
+      if (!searchTerm) {
+        setCounts((prev) => ({ ...prev, [tab]: total }));
+      }
       setIsRateLimited(false);
     } catch (error) {
       console.error("Error fetching notes", error);
@@ -89,6 +92,14 @@ const HomePage = () => {
       setIsLoadingMore(false);
     }
   }, [activeTab]);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchNotes(1, { tab: activeTab, search: search.trim() });
+    }, search ? 350 : 0);
+    return () => clearTimeout(timer);
+  }, [search, activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
+  
 
   // fetch the count for the inactive tab quietly, just for the badge number
   const fetchOtherCount = useCallback(async (tab) => {
@@ -103,7 +114,6 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    fetchNotes(1, { tab: activeTab });
     fetchOtherCount(activeTab === "all" ? "shared" : "all");
   }, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -115,7 +125,7 @@ const HomePage = () => {
 
   const handleLoadMore = () => {
     if (isLoadingMore || !hasMore) return;
-    fetchNotes(page + 1, { append: true, tab: activeTab });
+    fetchNotes(page + 1, { append: true, tab: activeTab, search: search.trim() });
   };
 
   const handleDeleteRequest = (id) => {
@@ -188,7 +198,7 @@ const HomePage = () => {
         confirmVariant="error"
       />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 pb-32 sm:pb-8">
 
         {!isRateLimited && !isLoading && totalNotes > 0 && (
           <div className="mb-4 animate-slide-up">
@@ -273,33 +283,30 @@ const HomePage = () => {
           </div>
         )}
 
-        {!isLoading && !isRateLimited && totalNotes === 0 && (
+        {!isRateLimited && !isLoading && totalNotes === 0 && !search && (
           activeTab === "shared" ? <EmptySharedState /> : <EmptyState />
         )}
 
-        {!isLoading && !isRateLimited && totalNotes > 0 && filtered.length === 0 && (
+        {!isLoading && !isRateLimited && totalNotes === 0 && search && (
           <div className="text-center py-16 animate-fade-in">
             <p className="text-ink-subtle text-sm">
               No notes match <span className="text-primary">"{search}"</span>
             </p>
-            <button
-              onClick={() => setSearch("")}
-              className="btn btn-ghost btn-xs mt-3 text-ink-subtle"
-            >
+            <button onClick={() => setSearch("")} className="btn btn-ghost btn-xs mt-3 text-ink-subtle">
               Clear search
             </button>
           </div>
         )}
 
-        {!isLoading && !isRateLimited && filtered.length > 0 && (
+        {!isLoading && !isRateLimited && notes.length > 0 && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filtered.map((note) => (
+              {notes.map((note) => (
                 <NoteCard key={note._id} note={note} onDelete={handleDeleteRequest} />
               ))}
             </div>
 
-            {!search && hasMore && (
+            {hasMore && (
               <div className="flex justify-center pt-6">
                 <button
                   onClick={handleLoadMore}
@@ -318,7 +325,7 @@ const HomePage = () => {
               </div>
             )}
 
-            {!search && !hasMore && notes.length > PAGE_SIZE && (
+            {!hasMore && notes.length > PAGE_SIZE && (
               <p className="text-center text-xs text-ink-faint pt-4">
                 You've reached the end — {totalNotes} notes total
               </p>

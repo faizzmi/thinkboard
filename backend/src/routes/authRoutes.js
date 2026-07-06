@@ -11,6 +11,7 @@ import {
     forgotPassword,
     resetPassword,
     checkEmail,
+    logout
 } from "../controllers/authController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
 import authRateLimiter from "../middleware/authRateLimiter.js";
@@ -32,4 +33,5 @@ router.post("/resend-verification", protectRoute, authRateLimiter, resendVerific
 router.post("/forgot-password", authRateLimiter, forgotPassword);
 router.post("/reset-password", resetPassword);
 
+router.post("/logout", protectRoute, logout);
 export default router;

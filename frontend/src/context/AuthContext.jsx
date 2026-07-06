@@ -28,16 +28,35 @@ export const AuthProvider = ({ children }) => {
         loadUser();
     }, [token]);
 
+    // heartbeat: catch session revocation even on an idle tab
+    useEffect(() => {
+        if (!token) return;
+
+        const interval = setInterval(() => {
+            api.get("/api/auth/me").catch(() => {
+                // errors are handled globally by the axios interceptor
+            });
+        }, 20000);
+
+        return () => clearInterval(interval);
+    }, [token]);
+
     const login = (data) => {
         localStorage.setItem("token", data.token);
         setToken(data.token);
         setUser({ _id: data._id, name: data.name, email: data.email, theme: data.theme, emailVerified: data.emailVerified });
     };
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        setToken(null);
-        setUser(null);
+    const logout = async () => {
+        try {
+            await api.post("/api/auth/logout");
+        } catch (error) {
+            console.error("Logout request failed", error);
+        } finally {
+            localStorage.removeItem("token");
+            setToken(null);
+            setUser(null);
+        }
     };
 
     const updateUser = (partial) => {
