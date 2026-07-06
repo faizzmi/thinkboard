@@ -13,7 +13,7 @@ export async function sendWelcomeEmail(user) {
         console.warn("Resend API key not set, skipping email send.");
         return;
     }
-    
+    const verifyUrl = `${FRONTEND_URL}/verify-email?token=${rawToken}`;
     try {
         await resend.emails.send({
             from: FROM,

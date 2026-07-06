@@ -1,17 +1,14 @@
 import request from "supertest";
 import { expect } from "chai";
-import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import sinon from "sinon";
 import express from "express";
 import authRoutes from "../src/routes/authRoutes.js";
+import { authRatelimit } from "../src/config/upstash.js";
 
 let app;
-let mongod;
 
 before(async () => {
-  process.env.JWT_SECRET = process.env.JWT_SECRET || "test-secret";
-  mongod = await MongoMemoryServer.create();
-  await mongoose.connect(mongod.getUri());
+  sinon.stub(authRatelimit, "limit").resolves({ success: true });
 
   app = express();
   app.use(express.json());
@@ -22,9 +19,8 @@ before(async () => {
     .send({ name: "Existing User", email: "existing@example.com", password: "password123" });
 });
 
-after(async () => {
-  await mongoose.disconnect();
-  await mongod.stop();
+after(() => {
+  sinon.restore();
 });
 
 describe("GET /api/auth/check-email", () => {

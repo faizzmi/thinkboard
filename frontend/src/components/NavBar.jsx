@@ -27,11 +27,6 @@ const NavBar = () => {
       isActive(path) ? "text-primary bg-primary/10" : "text-ink-muted hover:text-base-content"
     }`;
 
-  const mobileIconClass = (path) =>
-    `btn btn-ghost btn-sm btn-circle ${
-      isActive(path) ? "text-primary bg-primary/15" : "text-ink-muted"
-    }`;
-
   return (
     <>
     <div className="sticky top-4 z-50 hidden sm:flex justify-center px-6">
@@ -137,6 +132,8 @@ const NavBar = () => {
 
             <button
               onClick={() => navigate("/create")}
+              aria-label="New Note"
+              title="New Note"
               className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full text-ink-muted bg-primary"
             >
               <PlusIcon className="w-5 h-5" />

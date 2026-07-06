@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import ConfirmModal from "../components/ConfirmModal";
-import { ArrowLeftIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import AccountSettings from "../components/profile/AccountSettings";
 import AppearanceSettings from "../components/profile/AppearanceSettings";

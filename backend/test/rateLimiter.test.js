@@ -1,4 +1,3 @@
-// backend/test/rateLimiter.test.js
 import { expect } from "chai";
 import sinon from "sinon";
 import ipRateLimiter from "../src/middleware/ipRateLimiter.js";

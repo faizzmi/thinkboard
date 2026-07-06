@@ -12,7 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ShortcutsModal from "./components/ShortcutsModal";
 import { Toaster } from "react-hot-toast";
 import { useGlobalShortcuts } from "./hooks/useGlobalShortcuts";
-import { useShortcutsModal } from "./context/ShortcutsModalContext";
+import { useShortcutsModal } from "../context/useShortcutsModal";
 import SplitViewPage from "./pages/SplitViewPage";
 import SharedNotePage from "./pages/SharedNotePage";
 import DashboardPage from "./pages/DashboardPage";

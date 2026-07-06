@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import NavBar from "../components/NavBar";
 import ConfirmModal from "../components/ConfirmModal";
@@ -13,7 +13,6 @@ const NoteColumn = ({ slot, noteId, onPick }) => {
   const [notes, setNotes] = useState([]);
   const [search, setSearch] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Split view's picker wants a wider list than the 9-per-page default

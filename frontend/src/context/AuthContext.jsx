@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
                 const res = await api.get("/api/auth/me");
                 setUser(res.data);
             } catch (error) {
+                console.error("Failed to load user", error);
                 localStorage.removeItem("token");
                 setToken(null);
             } finally {
