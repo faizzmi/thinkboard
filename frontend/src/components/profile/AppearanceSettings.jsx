@@ -1,5 +1,5 @@
 import { CheckIcon } from "lucide-react";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../context/useTheme";
 
 const AppearanceSettings = () => {
   const { theme, setTheme, themes } = useTheme();
