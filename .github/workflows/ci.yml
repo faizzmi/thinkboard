@@ -1,4 +1,13 @@
-backend:
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
     runs-on: ubuntu-latest
     env:
       UPSTASH_REDIS_REST_URL: https://fake-test-instance.upstash.io
